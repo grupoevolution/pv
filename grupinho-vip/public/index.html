@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Grupo Secreto — Mulheres Casadas</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;overflow-x:hidden}
+:root{
+  --bg:#080508;
+  --bg2:#100b0e;
+  --bg3:#180d11;
+  --bg4:#221018;
+  --wine:#8c1a3a;
+  --wine2:#b82249;
+  --wine3:#d9295a;
+  --gold:#c49030;
+  --gold2:#e0aa42;
+  --gold3:#f5cd72;
+  --text:#f7edf0;
+  --muted:#8a717a;
+  --muted2:#4a2f38;
+  --green:#27c47a;
+  --tg:#229ed9;
+  --danger:#ff4757;
+}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  max-width:430px;
+  margin:0 auto;
+  position:relative;
+}
+
+/* ─── URGENCY BAR ─── */
+.ubar{
+  background:linear-gradient(90deg,var(--wine) 0%,var(--wine3) 50%,var(--wine) 100%);
+  background-size:200%;
+  animation:ubar 4s linear infinite;
+  text-align:center;padding:11px 16px;
+  font-size:12px;font-weight:800;color:#fff;
+  letter-spacing:.3px;
+}
+@keyframes ubar{0%{background-position:0%}100%{background-position:200%}}
+.ubar b{background:rgba(0,0,0,.25);border-radius:4px;padding:1px 8px;margin-left:4px;}
+
+/* ─── HERO ─── */
+.hero{
+  padding:16px 20px 18px;
+  text-align:center;
+  background:linear-gradient(180deg,rgba(140,26,58,.14) 0%,transparent 100%);
+}
+.hero-live{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(39,196,122,.1);
+  border:1px solid rgba(39,196,122,.3);
+  border-radius:20px;padding:5px 12px;
+  font-size:11px;font-weight:800;color:var(--green);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;
+}
+.hero-live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 8px var(--green);
+  animation:blink 1.4s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:26px;font-weight:900;
+  line-height:1.15;color:#fff;margin-bottom:8px;
+}
+.hero h1 em{
+  font-style:italic;
+  background:linear-gradient(135deg,var(--gold2),var(--gold3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero p{
+  font-size:13px;color:var(--muted);
+  line-height:1.6;padding:0 6px;margin-bottom:16px;
+}
+
+/* ─── LOC CARD ─── */
+.loc-card{
+  background:linear-gradient(160deg,var(--bg3),var(--bg4));
+  border:1px solid rgba(196,144,48,.3);
+  border-radius:22px;padding:28px 20px 22px;
+  position:relative;overflow:hidden;
+  margin-bottom:0;
+}
+.loc-card::after{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold2),transparent);
+}
+.loc-pin{font-size:44px;margin-bottom:14px;display:block;text-align:center;}
+.loc-card h2{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;color:#fff;
+  text-align:center;margin-bottom:8px;line-height:1.3;
+}
+.loc-card p{
+  font-size:13px;color:var(--muted);
+  text-align:center;line-height:1.6;margin-bottom:22px;
+}
+.loc-btn{
+  width:100%;background:linear-gradient(135deg,var(--wine2),var(--wine3));
+  border:none;border-radius:14px;padding:16px;
+  font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;
+  color:#fff;cursor:pointer;
+  box-shadow:0 6px 24px rgba(180,34,73,.5);
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  transition:transform .15s;
+}
+.loc-btn:active{transform:scale(.97);}
+.loc-note{font-size:11px;color:var(--muted2);text-align:center;margin-top:10px;}
+
+/* ─── SEARCHING ─── */
+.searching{
+  display:none;text-align:center;padding:32px 20px;
+}
+.spin{
+  width:52px;height:52px;
+  border:3px solid var(--bg4);
+  border-top-color:var(--wine3);
+  border-radius:50%;
+  margin:0 auto 18px;
+  animation:spin .75s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.searching p{font-size:14px;color:var(--muted);margin-bottom:6px;}
+.searching strong{font-size:18px;font-weight:900;color:var(--gold2);}
+
+/* ─── RESULTS ─── */
+.results{display:none;padding:0;}
+
+.results-head{
+  text-align:center;
+  padding:24px 20px 18px;
+}
+.results-city-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(217,41,90,.12);
+  border:1px solid rgba(217,41,90,.3);
+  border-radius:20px;padding:6px 16px;
+  font-size:12px;font-weight:800;color:var(--wine3);
+  margin-bottom:14px;
+}
+.results-head h2{
+  font-family:'Playfair Display',serif;
+  font-size:26px;font-weight:700;color:#fff;
+  line-height:1.2;margin-bottom:8px;
+}
+.results-head h2 span{color:var(--wine3);}
+.results-head p{font-size:13px;color:var(--muted);}
+
+.carousel-outer{overflow:hidden;margin:0;padding:0 0 4px;}
+.carousel{
+  display:flex;gap:12px;
+  overflow-x:auto;padding:8px 20px 16px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.carousel::-webkit-scrollbar{display:none;}
+
+.girl-card{
+  flex-shrink:0;
+  width:210px;
+  scroll-snap-align:start;
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 4px 20px rgba(0,0,0,.5);
+}
+.girl-img{
+  width:100%;height:310px;
+  object-fit:cover;object-position:top center;
+  display:block;
+}
+.girl-img-placeholder{
+  width:100%;height:310px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:64px;font-weight:900;
+  letter-spacing:-2px;
+}
+.girl-overlay{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(to bottom, rgba(8,5,8,.7) 0%, transparent 30%),
+    linear-gradient(to top, rgba(8,5,8,.96) 0%, rgba(8,5,8,.3) 38%, transparent 55%);
+}
+.girl-online-dot{
+  position:absolute;top:12px;right:12px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--green);
+  border:2px solid var(--bg);
+  box-shadow:0 0 10px var(--green);
+}
+.girl-info{
+  position:absolute;top:0;left:0;right:0;
+  padding:12px 12px 20px;
+  background:linear-gradient(to bottom,rgba(8,5,8,.78) 0%,rgba(8,5,8,.3) 70%,transparent 100%);
+}
+.girl-name{font-size:15px;font-weight:900;color:#fff;margin-bottom:4px;text-shadow:0 1px 6px rgba(0,0,0,.9);}
+.girl-dist{
+  font-size:11px;font-weight:700;
+  color:var(--gold2);
+  display:flex;align-items:center;gap:4px;
+  text-shadow:0 1px 4px rgba(0,0,0,.9);
+}
+.girl-btns{
+  position:absolute;bottom:0;left:0;right:0;
+  display:flex;gap:7px;
+  padding:8px 10px 13px;
+  background:linear-gradient(to top,rgba(8,5,8,.96) 0%,rgba(8,5,8,.55) 65%,transparent 100%);
+}
+.girl-btn{
+  flex:1;border:none;border-radius:11px;
+  padding:10px 5px;
+  font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;
+  color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  transition:transform .15s;letter-spacing:.2px;
+}
+.girl-btn:active{transform:scale(.95);}
+.girl-btn-wa{background:#25D366;box-shadow:0 3px 12px rgba(37,211,102,.45);}
+.girl-btn-call{background:linear-gradient(135deg,var(--wine2),var(--wine3));box-shadow:0 3px 12px rgba(217,41,90,.45);}
+
+/* ─── LIVE GROUP ─── */
+.live-wrap{
+  padding:0 20px;margin-top:28px;
+  display:none;
+}
+.live-head{
+  display:flex;align-items:center;gap:8px;margin-bottom:14px;
+}
+.live-dot{
+  width:11px;height:11px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 12px var(--green);
+  animation:blink 1.4s infinite;flex-shrink:0;
+}
+.live-head h3{
+  font-family:'Playfair Display',serif;
+  font-size:19px;font-weight:700;color:#fff;flex:1;
+}
+.live-head span{font-size:11px;color:var(--muted);}
+
+/* TG FRAME */
+.tg-frame{
+  background:var(--bg2);
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.07);
+}
+.tg-bar{
+  background:#1c1f2e;
+  padding:11px 14px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.tg-av{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,var(--wine2),var(--wine3));
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:900;color:#fff;flex-shrink:0;
+}
+.tg-gname{font-size:14px;font-weight:800;color:#fff;}
+.tg-gcount{font-size:11px;color:var(--tg);margin-top:1px;}
+.tg-lock-icon{margin-left:auto;font-size:18px;}
+
+.tg-msgs{
+  height:320px;overflow-y:auto;
+  padding:12px 12px 10px;
+  display:flex;flex-direction:column;gap:7px;
+  scroll-behavior:smooth;
+}
+.tg-msgs::-webkit-scrollbar{width:2px;}
+.tg-msgs::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px;}
+
+.msg-row{
+  display:flex;align-items:flex-end;gap:7px;
+  animation:msgPop .25s ease;
+}
+@keyframes msgPop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.msg-av{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:900;color:#fff;
+  flex-shrink:0;
+}
+.msg-bubble{
+  background:var(--bg3);
+  border-radius:14px 14px 14px 3px;
+  padding:8px 11px;
+  max-width:78%;
+}
+.msg-sender{font-size:10px;font-weight:800;margin-bottom:3px;}
+.msg-text{font-size:13px;color:var(--text);line-height:1.45;}
+.msg-time{font-size:9px;color:var(--muted2);margin-top:3px;text-align:right;}
+
+.msg-photo-wrap{
+  border-radius:12px;overflow:hidden;margin-bottom:3px;
+  position:relative;width:200px;
+}
+.msg-photo-inner{
+  height:220px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:60px;
+}
+.msg-photo-blur .msg-photo-inner{filter:blur(18px);}
+.msg-photo-blur::after{
+  content:'🔒 Ver foto';
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:900;color:#fff;
+  background:rgba(0,0,0,.4);
+  cursor:pointer;
+  border-radius:12px;
+}
+
+/* LOCKED BANNER */
+.tg-locked{
+  padding:18px 16px;
+  border-top:1px solid rgba(255,255,255,.06);
+  text-align:center;
+  background:linear-gradient(180deg,var(--bg3),var(--bg2));
+}
+.tg-locked-icon{font-size:28px;margin-bottom:8px;}
+.tg-locked h4{font-size:14px;font-weight:900;color:#fff;margin-bottom:5px;}
+.tg-locked p{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:14px;}
+.tg-locked-btn{
+  width:100%;background:linear-gradient(135deg,var(--wine2),var(--wine3));
+  border:none;border-radius:12px;padding:14px;
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;
+  color:#fff;cursor:pointer;
+  box-shadow:0 4px 18px rgba(180,34,73,.45);
+}
+
+.tg-input-row{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 12px;
+  background:var(--bg3);
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.tg-inp{
+  flex:1;background:var(--bg4);
+  border:1px solid var(--muted2);border-radius:20px;
+  padding:9px 14px;font-family:'Nunito',sans-serif;
+  font-size:13px;color:var(--text);outline:none;cursor:pointer;
+}
+.tg-inp::placeholder{color:var(--muted2);}
+.tg-send{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--tg);border:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;cursor:pointer;flex-shrink:0;
+}
+
+/* ─── CTA BTN ─── */
+.main-cta-wrap{
+  padding:24px 20px 0;display:none;
+}
+.main-cta{
+  width:100%;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border:none;border-radius:16px;padding:18px;
+  font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;
+  color:#100b0e;cursor:pointer;
+  box-shadow:0 6px 28px rgba(196,144,48,.4);
+  display:flex;align-items:center;justify-content:center;gap:9px;
+}
+.main-cta-sub{
+  text-align:center;font-size:12px;
+  color:var(--muted);margin-top:9px;
+}
+
+/* ─── DIVIDER ─── */
+.div-line{
+  display:flex;align-items:center;gap:12px;
+  padding:36px 20px 28px;
+}
+.div-line::before,.div-line::after{content:'';flex:1;height:1px;background:var(--bg4);}
+.div-line span{
+  font-size:10px;font-weight:800;color:var(--muted2);
+  letter-spacing:2.5px;text-transform:uppercase;white-space:nowrap;
+}
+
+/* ─── PROOF ─── */
+.proof-wrap{padding:0 20px;}
+.proof-wrap h2{
+  font-family:'Playfair Display',serif;
+  font-size:26px;font-weight:700;color:#fff;
+  text-align:center;margin-bottom:7px;line-height:1.2;
+}
+.proof-wrap h2 span{color:var(--wine3);}
+.proof-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:22px;line-height:1.6;}
+
+.testimonials{display:flex;flex-direction:column;gap:12px;}
+.test{
+  background:var(--bg3);
+  border:1px solid var(--bg4);
+  border-left:3px solid var(--wine3);
+  border-radius:14px;padding:16px;
+}
+.test-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.test-av{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--wine),var(--wine3));
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:900;color:#fff;flex-shrink:0;
+}
+.test-name{font-size:13px;font-weight:800;}
+.test-city{font-size:11px;color:var(--muted);}
+.test-stars{font-size:13px;color:var(--gold2);margin-bottom:8px;letter-spacing:1px;}
+.test-text{font-size:13px;color:var(--muted);line-height:1.6;}
+.test-tag{
+  display:inline-block;margin-top:9px;
+  background:rgba(39,196,122,.12);
+  border:1px solid rgba(39,196,122,.25);
+  border-radius:6px;padding:4px 10px;
+  font-size:11px;font-weight:800;color:var(--green);
+}
+
+/* GUARANTEE */
+.guarantee{
+  background:linear-gradient(160deg,var(--bg3),var(--bg4));
+  border:1px solid rgba(196,144,48,.22);
+  border-radius:18px;padding:24px 20px;
+  text-align:center;margin-top:20px;
+  position:relative;overflow:hidden;
+}
+.guarantee::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold2),transparent);
+}
+.guarantee-icon{font-size:44px;margin-bottom:12px;display:block;}
+.guarantee h3{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;color:var(--gold2);margin-bottom:9px;
+}
+.guarantee p{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* ─── PLANS ─── */
+.plans-wrap{padding:0 20px;}
+.plans-wrap h2{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;color:#fff;
+  text-align:center;margin-bottom:7px;line-height:1.2;
+}
+.plans-wrap h2 span{color:var(--wine3);}
+.plans-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:24px;}
+
+.plan{
+  background:var(--bg3);border:1px solid var(--bg4);
+  border-radius:18px;padding:20px 18px;margin-bottom:14px;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .15s;
+}
+.plan:active{transform:scale(.98);}
+.plan.featured{
+  border-color:rgba(196,144,48,.45);
+  background:linear-gradient(160deg,rgba(140,26,58,.1),var(--bg3));
+}
+.plan-badge{
+  position:absolute;top:-1px;right:18px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#100b0e;font-size:9px;font-weight:900;
+  padding:4px 12px;border-radius:0 0 9px 9px;
+  letter-spacing:.8px;text-transform:uppercase;
+}
+.plan-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.plan-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;}
+.plan-price{
+  font-family:'Playfair Display',serif;
+  font-size:40px;font-weight:700;color:#fff;line-height:1;
+}
+.plan-price sup{font-size:18px;vertical-align:top;margin-top:7px;}
+.plan-old{font-size:11px;color:var(--muted2);text-decoration:line-through;margin-top:3px;}
+.plan-equiv{font-size:12px;color:var(--muted);margin-top:2px;}
+.plan-disc{
+  background:rgba(39,196,122,.12);
+  border:1px solid rgba(39,196,122,.25);
+  border-radius:10px;padding:8px 10px;
+  text-align:center;flex-shrink:0;margin-left:8px;
+  margin-top:2px;
+}
+.plan-disc-num{font-size:20px;font-weight:900;color:var(--green);line-height:1;}
+.plan-disc-off{font-size:10px;font-weight:800;color:var(--green);}
+.plan-feats{list-style:none;margin-bottom:16px;}
+.plan-feats li{
+  font-size:13px;color:var(--muted);
+  padding:5px 0;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.plan-feats li:last-child{border-bottom:none;}
+.plan-feats li::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--wine3);flex-shrink:0;
+}
+.plan-btn{
+  width:100%;border:none;border-radius:13px;
+  padding:15px;font-family:'Nunito',sans-serif;
+  font-size:15px;font-weight:900;cursor:pointer;
+  transition:transform .15s;
+}
+.plan-btn:active{transform:scale(.97);}
+.plan.featured .plan-btn{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#100b0e;
+  box-shadow:0 4px 22px rgba(196,144,48,.4);
+}
+.plan:not(.featured) .plan-btn{
+  background:var(--bg4);color:var(--text);
+  border:1px solid var(--muted2);
+}
+
+/* ORDER BUMP */
+.obump{
+  background:linear-gradient(160deg,rgba(196,144,48,.06),var(--bg3));
+  border:1px dashed rgba(196,144,48,.38);
+  border-radius:14px;padding:14px;
+  margin:2px 0 20px;
+  display:flex;align-items:flex-start;gap:11px;
+}
+.ob-box{
+  width:22px;height:22px;border-radius:5px;
+  border:2px solid var(--gold);
+  background:rgba(196,144,48,.12);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;cursor:pointer;
+  transition:background .2s;
+}
+.ob-box.on{background:var(--gold);}
+.ob-box svg{display:none;}
+.ob-box.on svg{display:block;}
+.ob-title{font-size:13px;font-weight:800;color:var(--gold2);margin-bottom:3px;}
+.ob-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.ob-price{font-size:13px;font-weight:900;color:var(--green);margin-top:4px;}
+
+/* ─── FAQ ─── */
+.faq-wrap{padding:0 20px;}
+.faq-wrap h2{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:700;color:#fff;
+  text-align:center;margin-bottom:16px;
+}
+.faq-item{
+  background:var(--bg3);border:1px solid var(--bg4);
+  border-radius:13px;margin-bottom:9px;overflow:hidden;
+}
+.faq-q{
+  padding:15px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;gap:12px;
+}
+.faq-q-t{font-size:13px;font-weight:700;line-height:1.4;flex:1;}
+.faq-ico{
+  width:23px;height:23px;border-radius:50%;
+  background:var(--bg4);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:15px;
+  transition:transform .25s;
+}
+.faq-item.open .faq-ico{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;padding:0 16px;}
+.faq-item.open .faq-a{max-height:200px;padding:0 16px 16px;}
+.faq-a-t{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* ─── FINAL CTA ─── */
+.final-wrap{
+  padding:36px 20px 80px;text-align:center;
+}
+.final-wrap h2{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;color:#fff;
+  line-height:1.2;margin-bottom:8px;
+}
+.final-wrap h2 span{color:var(--wine3);}
+.final-wrap p{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
+.final-btn{
+  width:100%;
+  background:linear-gradient(135deg,var(--wine2),var(--wine3));
+  border:none;border-radius:16px;padding:19px;
+  font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;
+  color:#fff;cursor:pointer;
+  box-shadow:0 8px 30px rgba(180,34,73,.55);
+  margin-bottom:12px;
+}
+.final-g{font-size:11px;color:var(--muted);}
+
+/* ─── STICKY ─── */
+.sticky{
+  position:fixed;bottom:0;
+  left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  padding:12px 20px 24px;
+  background:linear-gradient(to top,var(--bg) 55%,transparent);
+  z-index:100;display:none;
+}
+.sticky-btn{
+  width:100%;
+  background:linear-gradient(135deg,var(--wine2),var(--wine3));
+  border:none;border-radius:14px;padding:17px;
+  font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;
+  color:#fff;cursor:pointer;
+  box-shadow:0 5px 22px rgba(180,34,73,.5);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+
+/* ─── MODAL ─── */
+.modal-bg{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(5px);
+  display:none;align-items:flex-end;justify-content:center;
+}
+.modal-bg.on{display:flex;}
+.modal-sheet{
+  background:var(--bg2);
+  border-radius:24px 24px 0 0;
+  width:100%;max-width:430px;
+  padding:28px 22px 50px;
+  border-top:1px solid var(--bg4);
+  animation:su .3s ease;
+}
+@keyframes su{from{transform:translateY(100%)}to{transform:none}}
+.m-handle{width:40px;height:4px;background:var(--bg4);border-radius:2px;margin:0 auto 24px;}
+.m-icon{font-size:46px;text-align:center;margin-bottom:12px;}
+.m-title{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:700;color:#fff;
+  text-align:center;margin-bottom:8px;line-height:1.2;
+}
+.m-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:24px;line-height:1.6;}
+.m-btn{
+  width:100%;background:linear-gradient(135deg,var(--wine2),var(--wine3));
+  border:none;border-radius:14px;padding:17px;
+  font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;
+  color:#fff;cursor:pointer;margin-bottom:12px;
+  box-shadow:0 5px 22px rgba(180,34,73,.4);
+}
+.m-skip{
+  display:block;text-align:center;
+  font-size:13px;color:var(--muted);
+  background:none;border:none;cursor:pointer;
+  font-family:'Nunito',sans-serif;padding:8px;width:100%;
+}
+</style>
+</head>
+<body>
+
+<!-- URGENCY BAR -->
+<div class="ubar">Somente hoje — <b id="vagasN">8 vagas restantes</b></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-live"><div class="hero-live-dot"></div>Grupo ativo agora</div>
+  <h1>Mulheres <em>casadas e solteiras</em> perto de você querendo um encontro</h1>
+  <p>Mais de 10.000 mulheres de todo o Brasil</p>
+
+  <!-- LOC CARD -->
+  <div class="loc-card" id="locCard">
+    <span class="loc-pin">📍</span>
+    <h2>Tem mulheres na sua cidade agora?</h2>
+    <p>Permite sua localização e veja quantas mulheres estão online perto de você nesse momento.</p>
+    <button class="loc-btn" onclick="startLoc()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      Ver mulheres perto de mim agora
+    </button>
+    <p class="loc-note">Usado apenas para mostrar perfis da sua região</p>
+  </div>
+
+  <!-- SEARCHING -->
+  <div class="searching" id="searchDiv">
+    <div class="spin"></div>
+    <p>Buscando mulheres em</p>
+    <strong id="searchCityTxt">sua região...</strong>
+  </div>
+</section>
+
+<!-- RESULTS (hidden until location) -->
+<div class="results" id="resultsDiv">
+
+  <div class="results-head">
+    <div class="results-city-badge">📍 <span id="cityBadgeTxt">Sua cidade</span></div>
+    <h2><span id="girlsNearN">54</span> MULHERES ONLINE AGORA<br>EM <span id="cityNameUpper" style="color:var(--wine3);text-transform:uppercase;"></span><br><span style="font-size:22px;color:var(--gold2);">PERTINHO DE VOCÊ!</span></h2>
+    <p>Deslize para ver os perfis disponíveis agora</p>
+  </div>
+
+  <div class="carousel-outer">
+    <div class="carousel" id="girlsCarousel"></div>
+  </div>
+
+  <!-- LIVE GROUP -->
+  <div class="live-wrap" id="liveWrap">
+    <div class="live-head">
+      <div class="live-dot"></div>
+      <h3>O que está rolando no grupo agora</h3>
+      <span id="liveMembN">10.847 membros</span>
+    </div>
+
+    <div class="tg-frame">
+      <div class="tg-bar">
+        <div class="tg-av" style="background:linear-gradient(135deg,#7a1533,#d9295a);overflow:hidden;padding:0;">
+          <img id="tgGroupAvatar" src="https://e-volutionn.com/wp-content/uploads/2026/02/CASADA-DISPONIVEL-2026-02-27T215240.415.png" style="width:100%;height:100%;object-fit:cover;object-position:top;" onerror="this.style.display='none';this.parentElement.innerHTML='GV'">
+        </div>
+        <div>
+          <div class="tg-gname" id="tgGroupName">Grupinho VIP 🔥</div>
+          <div class="tg-gcount" id="tgCountTxt">10.847 membros · 4.213 online</div>
+        </div>
+        <div class="tg-lock-icon">🔒</div>
+      </div>
+
+      <div class="tg-msgs" id="tgMsgs"></div>
+
+      <div class="tg-locked">
+        <div class="tg-locked-icon">🔒</div>
+        <h4>Conteúdo exclusivo para membros</h4>
+        <p>Acesse o grupo completo para ver todas as fotos, vídeos e participar das conversas ao vivo.</p>
+        <button class="tg-locked-btn" onclick="scrollPlans()">Quero acesso completo agora</button>
+      </div>
+
+      <div class="tg-input-row">
+        <input class="tg-inp" id="tgInp" placeholder="Digite uma mensagem..." readonly onclick="showModal()">
+        <button class="tg-send" onclick="showModal()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CTA -->
+  <div class="main-cta-wrap" id="mainCtaWrap">
+    <button class="main-cta" onclick="scrollPlans()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Garantir meu acesso agora
+    </button>
+    <p class="main-cta-sub">Encontro garantido ou dinheiro de volta</p>
+  </div>
+
+</div>
+
+<!-- PROOF -->
+<div class="div-line"><span>Resultados reais</span></div>
+<section class="proof-wrap">
+  <h2>Homens que <span>encontraram</span> de verdade</h2>
+  <p class="proof-sub">Mais de 900 encontros confirmados no último mês pelos membros do grupo</p>
+  <div class="testimonials" id="testimonialsBox">
+    <!-- preenchido dinamicamente via loadConfig() -->
+  </div>
+  <div class="guarantee">
+    <span class="guarantee-icon">🛡️</span>
+    <h3>Encontro garantido ou dinheiro de volta</h3>
+    <p>Se você participar ativamente por 30 dias e não conseguir nenhum encontro, devolvemos 100% do valor pago. Sem perguntas, sem burocracia.</p>
+  </div>
+</section>
+
+<!-- PLANS -->
+<div class="div-line" id="plansAnchor"><span>Escolha seu plano</span></div>
+<section class="plans-wrap" id="plansSection">
+  <h2>Acesse agora e <span>encontre hoje</span></h2>
+  <p class="plans-sub">Acesso liberado em menos de 1 minuto após o pagamento</p>
+
+  <!-- MENSAL -->
+  <div class="plan" onclick="goCheckout('mensal')">
+    <div class="plan-top">
+      <div>
+        <div class="plan-label">Mensal</div>
+        <div class="plan-price"><sup>R$</sup>69<small style="font-size:22px">,90</small></div>
+        <div class="plan-equiv">cobrado todo mês</div>
+      </div>
+    </div>
+    <ul class="plan-feats">
+      <li>Acesso completo ao Grupinho VIP</li>
+      <li>+10.000 mulheres ativas</li>
+      <li>Mulheres da sua cidade</li>
+      <li>Cancela quando quiser</li>
+    </ul>
+    <button class="plan-btn">Entrar no Grupo</button>
+  </div>
+
+  <!-- TRIMESTRAL DESTAQUE -->
+  <div class="plan featured" onclick="goCheckout('trimestral')">
+    <div class="plan-badge">⚡ Mais popular — melhor custo-benefício</div>
+    <div class="plan-top">
+      <div style="margin-top:14px;">
+        <div class="plan-label">3 Meses</div>
+        <div class="plan-price"><sup>R$</sup>127<small style="font-size:22px">,90</small></div>
+        <div class="plan-old">De R$ 209,70</div>
+        <div class="plan-equiv" style="color:var(--green);font-weight:800;">Só R$ 42,63/mês — economize R$ 81,80</div>
+      </div>
+      <div class="plan-disc">
+        <div class="plan-disc-num">39%</div>
+        <div class="plan-disc-off">OFF</div>
+      </div>
+    </div>
+    <ul class="plan-feats">
+      <li>Tudo do plano mensal</li>
+      <li>Pack exclusivo de fotos grátis 🎁</li>
+      <li>3 meses de acesso garantido</li>
+      <li>Sem cobrança surpresa</li>
+      <li>Prioridade em novos conteúdos</li>
+    </ul>
+    <div style="background:rgba(39,196,122,.1);border:1px solid rgba(39,196,122,.3);border-radius:10px;padding:10px 14px;text-align:center;margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:2px;">você economiza</div>
+      <div style="font-size:24px;font-weight:900;color:var(--green);line-height:1;">R$ 81,80</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px;">pagando 3 meses de uma vez</div>
+    </div>
+    <button class="plan-btn">Quero Entrar Agora</button>
+  </div>
+
+  <!-- ANUAL -->
+  <div class="plan" onclick="goCheckout('anual')">
+    <div class="plan-top">
+      <div>
+        <div class="plan-label">Anual — Máximo desconto</div>
+        <div class="plan-price"><sup>R$</sup>397<small style="font-size:22px">,90</small></div>
+        <div class="plan-old">De R$ 838,80</div>
+        <div class="plan-equiv" style="color:var(--green);font-weight:800;">Só R$ 33,16/mês — economize R$ 440,90</div>
+      </div>
+      <div class="plan-disc">
+        <div class="plan-disc-num">53%</div>
+        <div class="plan-disc-off">OFF</div>
+      </div>
+    </div>
+    <ul class="plan-feats">
+      <li>Tudo do plano trimestral</li>
+      <li>Pack premium exclusivo 🔥</li>
+      <li>12 meses por menos de R$34/mês</li>
+      <li>Acesso vitalício a novidades</li>
+    </ul>
+    <button class="plan-btn">Entrar com Desconto Máximo</button>
+  </div>
+
+  <p style="text-align:center;font-size:12px;color:var(--muted);margin-bottom:20px;">🔒 Pagamento 100% seguro via PIX · Acesso em menos de 1 minuto</p>
+</section>
+
+<!-- FAQ -->
+<div class="div-line"><span>Dúvidas</span></div>
+<section class="faq-wrap">
+  <h2>Perguntas frequentes</h2>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-t">O grupo tem mulheres reais?</span><span class="faq-ico">+</span></div><div class="faq-a"><p class="faq-a-t">Sim. São mulheres reais do Brasil inteiro que entraram por conta própria. O grupo tem mais de 2.400 membros ativos com movimentação diária de fotos e conversas.</p></div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-t">Como recebo o acesso após pagar?</span><span class="faq-ico">+</span></div><div class="faq-a"><p class="faq-a-t">Assim que o PIX for confirmado, você recebe automaticamente no WhatsApp um link exclusivo de acesso. Em menos de 1 minuto você já está dentro do grupo.</p></div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-t">Tem mulheres da minha cidade?</span><span class="faq-ico">+</span></div><div class="faq-a"><p class="faq-a-t">O grupo tem membros de todo o Brasil. Capitais e grandes cidades têm dezenas de mulheres próximas. Quanto maior a cidade, mais perfis disponíveis.</p></div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-t">Posso cancelar quando quiser?</span><span class="faq-ico">+</span></div><div class="faq-a"><p class="faq-a-t">No plano mensal você cancela a qualquer momento. Para planos trimestrais e anuais, o acesso fica ativo até o fim do período pago.</p></div></div>
+  <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-t">É discreto? Aparece no extrato?</span><span class="faq-ico">+</span></div><div class="faq-a"><p class="faq-a-t">Total discrição. O grupo é fechado e privado. O nome no extrato do PIX é neutro, sem nenhuma referência ao conteúdo.</p></div></div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-wrap">
+  <h2>Seu encontro pode ser <span>hoje à noite</span></h2>
+  <p>Centenas de membros estão acessando agora. Não deixe outra pessoa ficar com o contato que poderia ser seu.</p>
+  <button class="final-btn" onclick="scrollPlans()">Quero acesso agora — garantido</button>
+  <p class="final-g">Encontro garantido ou 100% de reembolso</p>
+</section>
+
+<!-- STICKY -->
+<div class="sticky" id="stickyBar">
+  <button class="sticky-btn" onclick="scrollPlans()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Garantir meu acesso agora
+  </button>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" onclick="bgClose(event)">
+  <div class="modal-sheet">
+    <div class="m-handle"></div>
+    <div class="m-icon">🔒</div>
+    <div class="m-title">Exclusivo para membros</div>
+    <p class="m-sub">Para interagir com as mulheres do grupo você precisa ter acesso. Garanta o seu agora e entre em minutos.</p>
+    <button class="m-btn" onclick="scrollPlansFromModal()">Ver planos e garantir acesso</button>
+    <button class="m-skip" onclick="closeModal()">Agora não</button>
+  </div>
+</div>
+
+<script>
+// ── RASTREIO ──────────────────────────────────────────
+const SID = Math.random().toString(36).slice(2) + Date.now();
+function trackEvent(event, data){
+  fetch('/api/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event,data})}).catch(()=>{});
+}
+// Ping a cada 30s para manter sessão ativa
+setInterval(()=>{
+  fetch('/api/ping',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sid:SID})}).catch(()=>{});
+},30000);
+// Ping inicial
+fetch('/api/ping',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sid:SID})}).catch(()=>{});
+trackEvent('pageview',{url:location.href});
+
+// ── CONFIG DO SERVIDOR ────────────────────────────────
+let LINKS = { mensal: '#', trimestral: '#', anual: '#' };
+let GIRLS = [];
+let MSGS_TEMPLATES = [];
+let TESTIMONIALS = [];
+let GROUP_NAME = 'Grupinho VIP 🔥';
+let GROUP_AVATAR = '';
+
+async function loadConfig(){
+  try {
+    const r = await fetch('/api/site-config');
+    const cfg = await r.json();
+    LINKS       = cfg.links || LINKS;
+    GIRLS       = cfg.girls || GIRLS;
+    MSGS_TEMPLATES = cfg.groupMsgs || MSGS_TEMPLATES;
+    TESTIMONIALS = cfg.testimonials || TESTIMONIALS;
+    GROUP_NAME  = cfg.groupName || GROUP_NAME;
+    GROUP_AVATAR= cfg.groupAvatar || GROUP_AVATAR;
+    // Atualizar nome e avatar do grupo
+    const gnEl = document.getElementById('tgGroupName');
+    if(gnEl) gnEl.textContent = GROUP_NAME;
+    const gavEl = document.getElementById('tgGroupAvatar');
+    if(gavEl && GROUP_AVATAR){ gavEl.src = GROUP_AVATAR; gavEl.style.display='block'; gavEl.nextElementSibling && (gavEl.nextElementSibling.style.display='none'); }
+    // Renderizar depoimentos dinamicamente
+    renderTestimonials();
+  } catch(e){
+    console.warn('Config não carregada, usando padrões', e);
+  }
+}
+
+function renderTestimonials(){
+  const box = document.getElementById('testimonialsBox');
+  if(!box || !TESTIMONIALS.length) return;
+  box.innerHTML = TESTIMONIALS.map(t=>`
+    <div class="test">
+      ${t.img?`<div style="width:100%;height:160px;border-radius:12px;overflow:hidden;margin-bottom:12px;"><img src="${t.img}" style="width:100%;height:100%;object-fit:cover;object-position:top;" onerror="this.parentElement.style.display='none'"></div>`:''}
+      <div class="test-top">
+        <div class="test-av">${t.name[0]}</div>
+        <div><div class="test-name">${t.name}</div><div class="test-city">${t.city}</div></div>
+      </div>
+      <div class="test-stars">★★★★★</div>
+      <div class="test-text">"${t.text}"</div>
+      <div class="test-tag">${t.tag}</div>
+    </div>
+  `).join('');
+}
+
+loadConfig();
+
+
+// GIRLS carregado via loadConfig()
+
+
+// ── MENSAGENS DO GRUPO ──
+let MSGS = [];
+function buildMsgs(city){
+  MSGS = (MSGS_TEMPLATES.length ? MSGS_TEMPLATES : [
+    {n:'Amanda S.',c:'#c0392b',t:`Boa noite gente! Sou de ${city} 🌙`,typ:'txt'},
+    {n:'Juliana M.',c:'#8b1a4a',t:`Também sou de ${city}! Alguém acordado? 😏`,typ:'txt'},
+    {n:'Camila R.',c:'#922040',t:'que ótimo! finalmente alguém perto 😍',typ:'txt'},
+    {n:'Fernanda T.',c:'#a01e42',t:'',typ:'foto',blur:false,img:''},
+    {n:'Larissa O.',c:'#851738',t:'Meu Deus 🥵🥵',typ:'txt'},
+    {n:'Amanda S.',c:'#c0392b',t:'',typ:'foto',blur:true,img:''},
+    {n:'Beatriz N.',c:'#922040',t:`Boa noite a todos de ${city} 💋`,typ:'txt'},
+  ]).map(m=> m.typ==='txt' ? {...m, t:m.t.replace(/daqui/g,city).replace(/sua cidade/g,city)} : m);
+}
+
+let msgIdx=0, userCity='sua região';
+
+// ── LOCALIZAÇÃO ──
+function startLoc(){
+  document.getElementById('locCard').style.display='none';
+  document.getElementById('searchDiv').style.display='block';
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      p=>fetchCity(p.coords.latitude,p.coords.longitude),
+      ()=>showResults('sua região')
+    );
+  } else { showResults('sua região'); }
+}
+
+function fetchCity(lat,lon){
+  fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+    .then(r=>r.json())
+    .then(d=>{
+      const c=d.address.city||d.address.town||d.address.village||d.address.county||'sua região';
+      showResults(c);
+    })
+    .catch(()=>showResults('sua região'));
+}
+
+function showResults(city){
+  userCity=city;
+  document.getElementById('searchCityTxt').textContent=city+'...';
+  setTimeout(()=>{
+    document.getElementById('searchDiv').style.display='none';
+    document.getElementById('resultsDiv').style.display='block';
+    const n=Math.floor(Math.random()*28)+42;
+    document.getElementById('girlsNearN').textContent=n;
+    document.getElementById('cityBadgeTxt').textContent=city;
+    const upperEl=document.getElementById('cityNameUpper');
+    if(upperEl) upperEl.textContent=city;
+    buildCarousel();
+    setTimeout(()=>{
+      document.getElementById('liveWrap').style.display='block';
+      document.getElementById('mainCtaWrap').style.display='block';
+      buildMsgs(city);
+      startTg();
+    },500);
+    setTimeout(()=>{ document.getElementById('stickyBar').style.display='block'; },3500);
+  },2400);
+}
+
+// ── CARROSSEL ──
+function buildCarousel(){
+  const c=document.getElementById('girlsCarousel');
+  c.innerHTML='';
+  const dists=['0,3km','0,6km','1,1km','1,7km','2,2km','2,8km','3,3km','3,9km','4,5km'];
+  const city=userCity||'sua cidade';
+  GIRLS.forEach((g,i)=>{
+    const d=document.createElement('div');
+    d.className='girl-card';
+    d.innerHTML=`
+      <img class="girl-img" src="${g.img}" alt="${g.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="girl-img-placeholder" style="display:none;background:linear-gradient(160deg,#7a1533,#080508);">${g.name[0]}</div>
+      <div class="girl-overlay"></div>
+      <div class="girl-online-dot"></div>
+      <div class="girl-info">
+        <div class="girl-name">${g.name}, ${g.age}</div>
+        <div class="girl-dist">📍 ${city} — ${dists[i]||'5km'}</div>
+      </div>
+      <div class="girl-btns">
+        <button class="girl-btn girl-btn-wa" onclick="showModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.85L.057 23.5l5.77-1.515A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.851 0-3.587-.485-5.092-1.334l-.361-.214-3.424.898.915-3.333-.235-.374A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          WhatsApp
+        </button>
+        <button class="girl-btn girl-btn-call" onclick="showModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          Ligar
+        </button>
+      </div>
+    `;
+    c.appendChild(d);
+  });
+}
+
+// ── SIMULAÇÃO DO GRUPO ──
+function startTg(){
+  const box=document.getElementById('tgMsgs');
+  let i=0;
+  function addMsg(){
+    const m=MSGS[i%MSGS.length]; i++;
+    const row=document.createElement('div');
+    row.className='msg-row';
+    const now=new Date();
+    const time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+    if(m.typ==='foto'){
+      const imgContent = m.img
+        ? `<img src="${m.img}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" onerror="this.parentElement.innerHTML='📸'">`
+        : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:60px;">📸</div>`;
+      row.innerHTML=`
+        <div class="msg-av" style="background:${m.c}">${m.n[0]}</div>
+        <div class="msg-bubble">
+          <div class="msg-sender" style="color:${m.c}">${m.n}</div>
+          <div class="msg-photo-wrap${m.blur?' msg-photo-blur':''}">
+            <div class="msg-photo-inner" style="background:linear-gradient(135deg,${m.c},#080508);padding:0;overflow:hidden;">${imgContent}</div>
+          </div>
+          <div class="msg-time">${time}</div>
+        </div>`;
+    } else {
+      row.innerHTML=`
+        <div class="msg-av" style="background:${m.c}">${m.n[0]}</div>
+        <div class="msg-bubble">
+          <div class="msg-sender" style="color:${m.c}">${m.n}</div>
+          <div class="msg-text">${m.t}</div>
+          <div class="msg-time">${time}</div>
+        </div>`;
+    }
+    box.appendChild(row);
+    box.scrollTop=box.scrollHeight;
+    while(box.children.length>30) box.removeChild(box.firstChild);
+    setTimeout(addMsg, 1800+Math.random()*3200);
+  }
+  for(let k=0;k<3;k++) setTimeout(()=>addMsg(),k*500);
+  setTimeout(addMsg,2000);
+}
+
+// ── CONTADORES ──
+(function(){
+  let v=8;
+  setInterval(()=>{ if(v>3){v--;document.getElementById('vagasN').textContent=v+' vagas restantes';} },50000);
+})();
+(function(){
+  let base=10847;
+  let online=4213;
+  setInterval(()=>{
+    base+=Math.floor(Math.random()*4)-1;
+    online+=Math.floor(Math.random()*10)-5;
+    online=Math.max(4000,Math.min(4500,online));
+    base=Math.max(10800,base);
+    const t=document.getElementById('tgCountTxt');
+    const l=document.getElementById('liveMembN');
+    if(t) t.textContent=base.toLocaleString('pt-BR')+' membros · '+online.toLocaleString('pt-BR')+' online';
+    if(l) l.textContent=base.toLocaleString('pt-BR')+' membros';
+  },9000);
+})();
+
+// ── FAQ ──
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+
+// ── ORDER BUMP ──
+function toggleOb(){ document.getElementById('obBox').classList.toggle('on'); }
+
+// ── PLANOS ──
+function goCheckout(p){ trackEvent('click',{btn:'plano_'+p}); window.location.href=LINKS[p]||'#'; }
+function scrollPlans(){ trackEvent('click',{btn:'cta_scroll_plans'}); document.getElementById('plansAnchor').scrollIntoView({behavior:'smooth'}); }
+
+// ── MODAL ──
+function showModal(){ document.getElementById('modalBg').classList.add('on'); }
+function closeModal(){ document.getElementById('modalBg').classList.remove('on'); }
+function bgClose(e){ if(e.target===document.getElementById('modalBg')) closeModal(); }
+function scrollPlansFromModal(){ closeModal(); scrollPlans(); }
+</script>
+</body>
+</html>

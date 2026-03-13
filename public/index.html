@@ -928,10 +928,10 @@ function startTg(){
     box.appendChild(row);
     box.scrollTop = box.scrollHeight;
     while(box.children.length > 30) box.removeChild(box.firstChild);
-    // foto: 5-7s | texto: 2-4s
+    // foto: 3-4s | texto: 1-3s
     const delay = m.typ === 'foto'
-      ? 5000 + Math.random() * 2000
-      : 2000 + Math.random() * 2000;
+      ? 3000 + Math.random() * 1000
+      : 1000 + Math.random() * 2000;
     setTimeout(addMsg, delay);
   }
   // UMA única chamada inicial — sem instâncias paralelas

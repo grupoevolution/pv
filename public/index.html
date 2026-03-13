@@ -361,17 +361,27 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
 .exit-divider span{font-size:10px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
 
 .exit-opt-free{
-  width:100%;background:rgba(39,196,122,.08);
-  border:1px solid rgba(39,196,122,.3);border-radius:13px;
-  padding:14px 16px;display:flex;align-items:center;gap:12px;
+  width:100%;
+  background:linear-gradient(135deg,#1a4a2e,#1f5c36);
+  border:1.5px solid rgba(39,196,122,.55);
+  border-radius:15px;
+  padding:16px 18px;
+  display:flex;align-items:center;gap:14px;
   cursor:pointer;font-family:'Nunito',sans-serif;text-align:left;
-  transition:transform .15s;margin-bottom:10px;
+  transition:transform .15s,box-shadow .15s;
+  margin-bottom:10px;
+  box-shadow:0 4px 20px rgba(39,196,122,.2);
+  position:relative;overflow:hidden;
+}
+.exit-opt-free::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(39,196,122,.6),transparent);
 }
 .exit-opt-free:active{transform:scale(.97);}
-.exit-opt-icon{font-size:24px;flex-shrink:0;}
-.exit-opt-label{font-size:10px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px;}
-.exit-opt-desc{font-size:13px;font-weight:700;color:#fff;}
-.exit-opt-detail{font-size:11px;color:var(--muted);}
+.exit-opt-icon{font-size:26px;flex-shrink:0;}
+.exit-opt-label{font-size:10px;font-weight:900;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+.exit-opt-desc{font-size:14px;font-weight:900;color:#fff;}
+.exit-opt-detail{font-size:11px;color:rgba(39,196,122,.8);margin-top:1px;}
 .exit-skip{display:block;text-align:center;font-size:12px;color:var(--muted2);background:none;border:none;cursor:pointer;font-family:'Nunito',sans-serif;padding:6px;width:100%;}
 
 /* ─── MODAL ─── */
@@ -645,10 +655,11 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     <button class="exit-opt-free" onclick="goExitFree()">
       <div class="exit-opt-icon">🎁</div>
       <div>
-        <div class="exit-opt-label">Grátis</div>
-        <div class="exit-opt-desc">Entrar no canal gratuito</div>
-        <div class="exit-opt-detail">Acesso ao grupo free — sem pagar nada agora</div>
+        <div class="exit-opt-label">Você ganhou acesso</div>
+        <div class="exit-opt-desc">Entrar no canal gratuito agora</div>
+        <div class="exit-opt-detail">Conteúdo exclusivo — sem pagar nada</div>
       </div>
+      <svg style="margin-left:auto;flex-shrink:0;opacity:.7;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#27c47a" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
     </button>
 
     <button class="exit-skip" onclick="closeExit()">Não quero encontrar ninguém</button>

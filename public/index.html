@@ -928,7 +928,10 @@ function startTg(){
     box.appendChild(row);
     box.scrollTop = box.scrollHeight;
     while(box.children.length > 30) box.removeChild(box.firstChild);
-    setTimeout(addMsg, 1800 + Math.random()*3200);
+    const delay = m.typ === 'foto'
+      ? 5000 + Math.random() * 3000
+      : 2000 + Math.random() * 3000;
+    setTimeout(addMsg, delay);
   }
   for(let k=0;k<3;k++) setTimeout(()=>addMsg(), k*500);
   setTimeout(addMsg, 2000);

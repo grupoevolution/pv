@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+      - ./public/uploads:/app/public/uploads
+    environment:
+      - PORT=3000
+      - JWT_SECRET=troque_por_uma_chave_secreta_forte
+      - ADMIN_USER=admin
+      - ADMIN_PASS=troque_sua_senha_aqui
+    restart: unless-stopped

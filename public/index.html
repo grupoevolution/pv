@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Grupo Secreto — Mulheres Casadas</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;overflow-x:hidden}
+:root{
+  --bg:#080508;--bg2:#100b0e;--bg3:#180d11;--bg4:#221018;
+  --wine:#8c1a3a;--wine2:#b82249;--wine3:#d9295a;
+  --gold:#c49030;--gold2:#e0aa42;--gold3:#f5cd72;
+  --text:#f7edf0;--muted:#8a717a;--muted2:#4a2f38;
+  --green:#27c47a;--tg:#229ed9;--danger:#ff4757;
+}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;max-width:430px;margin:0 auto;position:relative;}
+
+/* ─── PÁGINA FECHADA (estado inicial) ─── */
+#pageGate{
+  position:fixed;inset:0;z-index:50;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:24px 20px;
+  transition:opacity .6s ease, transform .6s ease;
+}
+#pageGate.hiding{opacity:0;transform:translateY(-20px);pointer-events:none;}
+
+/* ─── CONTEÚDO PRINCIPAL (oculto até localizar) ─── */
+#pageContent{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .7s ease, transform .7s ease;
+  pointer-events:none;
+}
+#pageContent.revealed{
+  opacity:1;transform:none;pointer-events:auto;
+}
+
+/* ─── URGENCY BAR ─── */
+.ubar{background:linear-gradient(90deg,var(--wine) 0%,var(--wine3) 50%,var(--wine) 100%);background-size:200%;animation:ubar 4s linear infinite;text-align:center;padding:11px 16px;font-size:12px;font-weight:800;color:#fff;letter-spacing:.3px;}
+@keyframes ubar{0%{background-position:0%}100%{background-position:200%}}
+
+/* ─── BARRA DE PROGRESSO DE VAGAS ─── */
+.vagas-bar-wrap{
+  background:rgba(140,26,58,.15);
+  border:1px solid rgba(217,41,90,.25);
+  border-radius:12px;
+  padding:10px 16px;
+  margin:0 20px;
+  margin-top:12px;
+}
+.vagas-bar-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.vagas-bar-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
+.vagas-bar-count{font-size:12px;font-weight:900;color:var(--danger);}
+.vagas-bar-track{height:8px;background:var(--bg4);border-radius:4px;overflow:hidden;}
+.vagas-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--wine2),var(--danger));transition:width 1s ease;}
+.vagas-bar-sub{font-size:10px;color:var(--muted);margin-top:5px;text-align:right;}
+
+/* ─── HERO (gate — só card) ─── */
+.gate-hero{width:100%;max-width:390px;}
+.gate-live{display:inline-flex;align-items:center;gap:7px;background:rgba(39,196,122,.1);border:1px solid rgba(39,196,122,.3);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:800;color:var(--green);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
+.gate-live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.gate-h1{font-family:'Playfair Display',serif;font-size:27px;font-weight:900;line-height:1.15;color:#fff;margin-bottom:8px;text-align:center;}
+.gate-h1 em{font-style:italic;background:linear-gradient(135deg,var(--gold2),var(--gold3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.gate-sub{font-size:13px;color:var(--muted);line-height:1.6;text-align:center;margin-bottom:20px;}
+
+.loc-card{background:linear-gradient(160deg,var(--bg3),var(--bg4));border:1px solid rgba(196,144,48,.3);border-radius:22px;padding:28px 20px 22px;position:relative;overflow:hidden;}
+.loc-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);}
+.loc-pin{font-size:44px;margin-bottom:14px;display:block;text-align:center;}
+.loc-card h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;line-height:1.3;}
+.loc-card p{font-size:13px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:22px;}
+.loc-btn{width:100%;background:linear-gradient(135deg,var(--wine2),var(--wine3));border:none;border-radius:14px;padding:16px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 6px 24px rgba(180,34,73,.5);display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .15s;}
+.loc-btn:active{transform:scale(.97);}
+.loc-note{font-size:11px;color:var(--muted2);text-align:center;margin-top:10px;}
+
+/* ─── SEARCHING ─── */
+.searching{display:none;text-align:center;padding:32px 20px;width:100%;max-width:390px;}
+.spin{width:52px;height:52px;border:3px solid var(--bg4);border-top-color:var(--wine3);border-radius:50%;margin:0 auto 18px;animation:spin .75s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.searching p{font-size:14px;color:var(--muted);margin-bottom:6px;}
+.searching strong{font-size:18px;font-weight:900;color:var(--gold2);}
+
+/* ─── CONTEÚDO REVELADO ─── */
+.results-head{text-align:center;padding:24px 20px 18px;}
+.results-city-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(217,41,90,.12);border:1px solid rgba(217,41,90,.3);border-radius:20px;padding:6px 16px;font-size:12px;font-weight:800;color:var(--wine3);margin-bottom:14px;}
+.results-head h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:8px;}
+.results-head p{font-size:13px;color:var(--muted);}
+
+/* ─── CAROUSEL ─── */
+.carousel-outer{overflow:hidden;padding:0 0 4px;}
+.carousel{display:flex;gap:12px;overflow-x:auto;padding:8px 20px 16px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.carousel::-webkit-scrollbar{display:none;}
+.girl-card{flex-shrink:0;width:210px;scroll-snap-align:start;border-radius:18px;overflow:hidden;position:relative;cursor:pointer;border:1px solid rgba(255,255,255,.08);box-shadow:0 4px 20px rgba(0,0,0,.5);}
+.girl-img{width:100%;height:310px;object-fit:cover;object-position:top center;display:block;}
+.girl-img-placeholder{width:100%;height:310px;display:flex;align-items:center;justify-content:center;font-size:64px;font-weight:900;}
+.girl-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,5,8,.78) 0%,rgba(8,5,8,.3) 30%,transparent 55%),linear-gradient(to top,rgba(8,5,8,.96) 0%,rgba(8,5,8,.3) 38%,transparent 55%);}
+.girl-online-dot{position:absolute;top:12px;right:12px;width:12px;height:12px;border-radius:50%;background:var(--green);border:2px solid var(--bg);box-shadow:0 0 10px var(--green);}
+.girl-info{position:absolute;top:0;left:0;right:0;padding:12px 12px 20px;background:linear-gradient(to bottom,rgba(8,5,8,.78) 0%,rgba(8,5,8,.3) 70%,transparent 100%);}
+.girl-name{font-size:15px;font-weight:900;color:#fff;margin-bottom:4px;text-shadow:0 1px 6px rgba(0,0,0,.9);}
+.girl-dist{font-size:11px;font-weight:700;color:var(--gold2);text-shadow:0 1px 4px rgba(0,0,0,.9);}
+.girl-btns{position:absolute;bottom:0;left:0;right:0;display:flex;gap:7px;padding:8px 10px 13px;background:linear-gradient(to top,rgba(8,5,8,.96) 0%,rgba(8,5,8,.55) 65%,transparent 100%);}
+.girl-btn{flex:1;border:none;border-radius:11px;padding:10px 5px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:900;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:transform .15s;}
+.girl-btn:active{transform:scale(.95);}
+.girl-btn-wa{background:#25D366;box-shadow:0 3px 12px rgba(37,211,102,.45);}
+.girl-btn-call{background:linear-gradient(135deg,var(--wine2),var(--wine3));box-shadow:0 3px 12px rgba(217,41,90,.45);}
+
+/* ─── LIVE GROUP ─── */
+.live-wrap{padding:0 20px;margin-top:28px;}
+.live-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.live-dot{width:11px;height:11px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);animation:blink 1.4s infinite;flex-shrink:0;}
+.live-head h3{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#fff;flex:1;}
+.live-head span{font-size:11px;color:var(--muted);}
+.tg-frame{background:var(--bg2);border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.07);}
+.tg-bar{background:#1c1f2e;padding:11px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.05);}
+.tg-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--wine2),var(--wine3));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;flex-shrink:0;overflow:hidden;padding:0;}
+.tg-av img{width:100%;height:100%;object-fit:cover;}
+.tg-gname{font-size:14px;font-weight:800;color:#fff;}
+.tg-gcount{font-size:11px;color:var(--tg);margin-top:1px;}
+.tg-lock-icon{margin-left:auto;font-size:18px;}
+.tg-msgs{height:320px;overflow-y:auto;padding:12px 12px 10px;display:flex;flex-direction:column;gap:7px;scroll-behavior:smooth;position:relative;}
+.tg-msgs::-webkit-scrollbar{width:2px;}
+.tg-msgs::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px;}
+.msg-row{display:flex;align-items:flex-end;gap:7px;animation:msgPop .25s ease;}
+@keyframes msgPop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.msg-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0;overflow:hidden;}
+.msg-av img{width:100%;height:100%;object-fit:cover;}
+.msg-bubble{background:var(--bg3);border-radius:14px 14px 14px 3px;padding:8px 11px;max-width:78%;}
+.msg-sender{font-size:10px;font-weight:800;margin-bottom:3px;}
+.msg-text{font-size:13px;color:var(--text);line-height:1.45;}
+.msg-time{font-size:9px;color:var(--muted2);margin-top:3px;text-align:right;}
+.msg-photo-wrap{border-radius:12px;overflow:hidden;margin-bottom:3px;width:200px;position:relative;}
+.msg-photo-inner{height:220px;display:flex;align-items:center;justify-content:center;font-size:60px;overflow:hidden;}
+.msg-photo-blur .msg-photo-inner{filter:blur(18px);}
+.msg-photo-blur::after{content:'🔒 Ver foto';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;background:rgba(0,0,0,.4);cursor:pointer;border-radius:12px;}
+.chat-lock-overlay{display:none;position:absolute;inset:0;background:linear-gradient(to top,rgba(8,5,8,1) 0%,rgba(8,5,8,.95) 30%,rgba(8,5,8,.6) 100%);backdrop-filter:blur(4px);border-radius:0 0 18px 18px;flex-direction:column;align-items:center;justify-content:flex-end;padding:20px 16px 24px;text-align:center;z-index:10;}
+.chat-lock-overlay.on{display:flex;}
+.chat-lock-ico{font-size:32px;margin-bottom:10px;}
+.chat-lock-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;}
+.chat-lock-sub{font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.6;}
+.chat-lock-btn{width:100%;background:linear-gradient(135deg,var(--wine2),var(--wine3));border:none;border-radius:13px;padding:15px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 4px 18px rgba(180,34,73,.5);}
+.tg-locked{padding:18px 16px;border-top:1px solid rgba(255,255,255,.06);text-align:center;background:linear-gradient(180deg,var(--bg3),var(--bg2));}
+.tg-locked-icon{font-size:28px;margin-bottom:8px;}
+.tg-locked h4{font-size:14px;font-weight:900;color:#fff;margin-bottom:5px;}
+.tg-locked p{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:14px;}
+.tg-locked-btn{width:100%;background:linear-gradient(135deg,var(--wine2),var(--wine3));border:none;border-radius:12px;padding:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 4px 18px rgba(180,34,73,.45);}
+.tg-input-row{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--bg3);border-top:1px solid rgba(255,255,255,.05);}
+.tg-inp{flex:1;background:var(--bg4);border:1px solid var(--muted2);border-radius:20px;padding:9px 14px;font-family:'Nunito',sans-serif;font-size:13px;color:var(--text);outline:none;cursor:pointer;}
+.tg-inp::placeholder{color:var(--muted2);}
+.tg-send{width:36px;height:36px;border-radius:50%;background:var(--tg);border:none;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;flex-shrink:0;}
+
+/* ─── MAIN CTA ─── */
+.main-cta-wrap{padding:24px 20px 0;}
+.main-cta{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:16px;padding:18px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;color:#100b0e;cursor:pointer;box-shadow:0 6px 28px rgba(196,144,48,.4);display:flex;align-items:center;justify-content:center;gap:9px;}
+.main-cta-sub{text-align:center;font-size:12px;color:var(--muted);margin-top:9px;}
+
+/* ─── DIVIDER ─── */
+.div-line{display:flex;align-items:center;gap:12px;padding:36px 20px 28px;}
+.div-line::before,.div-line::after{content:'';flex:1;height:1px;background:var(--bg4);}
+.div-line span{font-size:10px;font-weight:800;color:var(--muted2);letter-spacing:2.5px;text-transform:uppercase;white-space:nowrap;}
+
+/* ─── PROOF ─── */
+.proof-wrap{padding:0 20px;}
+.proof-wrap h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#fff;text-align:center;margin-bottom:7px;line-height:1.2;}
+.proof-wrap h2 span{color:var(--wine3);}
+.proof-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:22px;line-height:1.6;}
+.testimonials{display:flex;flex-direction:column;gap:12px;}
+.test{background:var(--bg3);border:1px solid var(--bg4);border-left:3px solid var(--wine3);border-radius:14px;padding:16px;}
+.test-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.test-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--wine),var(--wine3));display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#fff;flex-shrink:0;overflow:hidden;}
+.test-av img{width:100%;height:100%;object-fit:cover;}
+.test-name{font-size:13px;font-weight:800;}
+.test-city{font-size:11px;color:var(--muted);}
+.test-stars{font-size:13px;color:var(--gold2);margin-bottom:8px;}
+.test-text{font-size:13px;color:var(--muted);line-height:1.6;}
+.test-tag{display:inline-block;margin-top:9px;background:rgba(39,196,122,.12);border:1px solid rgba(39,196,122,.25);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:800;color:var(--green);}
+.test-media{width:100%;border-radius:10px;margin-top:10px;display:block;max-height:240px;object-fit:cover;}
+
+.guarantee{background:linear-gradient(160deg,var(--bg3),var(--bg4));border:1px solid rgba(196,144,48,.22);border-radius:18px;padding:24px 20px;text-align:center;margin-top:20px;position:relative;overflow:hidden;}
+.guarantee::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);}
+.guarantee-icon{font-size:44px;margin-bottom:12px;display:block;}
+.guarantee h3{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold2);margin-bottom:9px;}
+.guarantee p{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* ─── PLANS (redesenhados) ─── */
+.plans-wrap{padding:0 20px;}
+.plans-intro{text-align:center;margin-bottom:28px;}
+.plans-intro h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.2;}
+.plans-intro h2 span{color:var(--wine3);}
+.plans-intro p{font-size:13px;color:var(--muted);}
+
+.plan{border-radius:20px;padding:24px 20px;margin-bottom:16px;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s;border:1px solid rgba(255,255,255,.07);background:var(--bg3);}
+.plan:active{transform:scale(.98);}
+
+/* plano regular */
+.plan.regular{background:var(--bg3);}
+/* plano destaque */
+.plan.featured{
+  background:linear-gradient(160deg,#1a0a10,#22101a);
+  border:1px solid rgba(196,144,48,.5);
+  box-shadow:0 0 0 1px rgba(196,144,48,.15), 0 12px 40px rgba(140,26,58,.35);
+}
+.plan-badge{
+  position:absolute;top:0;left:0;right:0;
+  background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold));
+  background-size:200%;animation:badgeShine 3s linear infinite;
+  color:#100b0e;font-size:10px;font-weight:900;
+  padding:6px 12px;text-align:center;letter-spacing:1.5px;text-transform:uppercase;
+}
+@keyframes badgeShine{0%{background-position:0%}100%{background-position:200%}}
+
+.plan-header{text-align:center;padding-top:8px;margin-bottom:18px;}
+.plan-label{font-size:10px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;}
+.plan.featured .plan-label{color:var(--gold2);}
+
+.plan-price-wrap{position:relative;display:inline-block;}
+.plan-price{font-family:'Playfair Display',serif;font-size:64px;font-weight:900;color:#fff;line-height:1;display:flex;align-items:flex-start;justify-content:center;gap:2px;}
+.plan-price sup{font-size:22px;margin-top:12px;font-family:'Nunito',sans-serif;font-weight:900;}
+.plan-price .cents{font-size:28px;margin-top:10px;font-family:'Nunito',sans-serif;font-weight:900;}
+.plan.featured .plan-price{color:var(--gold3);}
+
+.plan-old{font-size:12px;color:var(--muted2);text-decoration:line-through;margin-top:4px;}
+.plan-per{font-size:13px;color:var(--muted);margin-top:3px;}
+.plan.featured .plan-per{color:var(--green);font-weight:800;}
+
+.plan-disc-pill{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(39,196,122,.15);border:1px solid rgba(39,196,122,.3);
+  border-radius:20px;padding:4px 12px;margin-top:8px;
+  font-size:13px;font-weight:900;color:var(--green);
+}
+
+.plan-feats{list-style:none;margin-bottom:18px;border-top:1px solid rgba(255,255,255,.06);padding-top:16px;}
+.plan-feats li{font-size:13px;color:var(--muted);padding:6px 0;display:flex;align-items:center;gap:9px;border-bottom:1px solid rgba(255,255,255,.04);}
+.plan-feats li:last-child{border-bottom:none;}
+.plan-feats li .check{width:18px;height:18px;border-radius:50%;background:rgba(39,196,122,.15);border:1px solid rgba(39,196,122,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;}
+.plan.featured .plan-feats li .check{background:rgba(196,144,48,.15);border-color:rgba(196,144,48,.3);}
+
+.economy-box{
+  background:rgba(39,196,122,.08);border:1px solid rgba(39,196,122,.2);
+  border-radius:12px;padding:12px 14px;text-align:center;margin-bottom:16px;
+}
+.economy-label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+.economy-val{font-size:26px;font-weight:900;color:var(--green);line-height:1;}
+.economy-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* BOTÕES DOS PLANOS */
+.plan-btn{
+  width:100%;border:none;border-radius:15px;
+  padding:18px;font-family:'Nunito',sans-serif;
+  font-size:16px;font-weight:900;cursor:pointer;
+  letter-spacing:.3px;transition:transform .15s,box-shadow .15s;
+  position:relative;overflow:hidden;
+}
+.plan-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.14),transparent);pointer-events:none;}
+.plan-btn:active{transform:scale(.97);}
+
+.plan.regular .plan-btn{
+  background:linear-gradient(135deg,#6b1a2e,#a01e3a);
+  color:#fff;border:1px solid rgba(217,41,90,.3);
+  box-shadow:0 4px 20px rgba(160,30,58,.4);
+  font-size:15px;
+}
+.plan.featured .plan-btn{
+  background:linear-gradient(135deg,#c49030,#e0aa42,#f5cd72);
+  color:#100b0e;font-size:17px;
+  box-shadow:0 6px 30px rgba(196,144,48,.65),0 2px 8px rgba(0,0,0,.3);
+  animation:pulseBtn 2.2s ease-in-out infinite;
+}
+@keyframes pulseBtn{
+  0%,100%{box-shadow:0 6px 30px rgba(196,144,48,.65),0 2px 8px rgba(0,0,0,.3);}
+  50%{box-shadow:0 10px 44px rgba(196,144,48,.95),0 2px 12px rgba(0,0,0,.3);}
+}
+.plan-btn-sub{font-size:11px;text-align:center;margin-top:8px;color:var(--muted);}
+
+/* ─── FAQ ─── */
+.faq-wrap{padding:0 20px;}
+.faq-wrap h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:16px;}
+.faq-item{background:var(--bg3);border:1px solid var(--bg4);border-radius:13px;margin-bottom:9px;overflow:hidden;}
+.faq-q{padding:15px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:12px;}
+.faq-q-t{font-size:13px;font-weight:700;line-height:1.4;flex:1;}
+.faq-ico{width:23px;height:23px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;transition:transform .25s;}
+.faq-item.open .faq-ico{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;padding:0 16px;}
+.faq-item.open .faq-a{max-height:200px;padding:0 16px 16px;}
+.faq-a-t{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* ─── FINAL CTA ─── */
+.final-wrap{padding:36px 20px 80px;text-align:center;}
+.final-wrap h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:8px;}
+.final-wrap h2 span{color:var(--wine3);}
+.final-wrap p{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
+.final-btn{width:100%;background:linear-gradient(135deg,var(--wine2),var(--wine3));border:none;border-radius:16px;padding:19px;font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 8px 30px rgba(180,34,73,.55);margin-bottom:12px;}
+.final-g{font-size:11px;color:var(--muted);}
+
+/* ─── STICKY ─── */
+.sticky{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;padding:12px 20px 24px;background:linear-gradient(to top,var(--bg) 55%,transparent);z-index:40;display:none;}
+.sticky-btn{width:100%;background:linear-gradient(135deg,var(--wine2),var(--wine3));border:none;border-radius:14px;padding:17px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 5px 22px rgba(180,34,73,.5);display:flex;align-items:center;justify-content:center;gap:8px;}
+
+/* ─── NOTIFICAÇÕES ─── */
+.notif-container{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:400px;z-index:45;pointer-events:none;}
+.notif{
+  background:rgba(16,11,14,.95);
+  border:1px solid rgba(217,41,90,.3);
+  border-left:3px solid var(--wine3);
+  border-radius:12px;padding:10px 14px;
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:8px;
+  transform:translateY(20px);opacity:0;
+  transition:all .4s ease;
+  pointer-events:none;
+  backdrop-filter:blur(8px);
+}
+.notif.show{transform:translateY(0);opacity:1;}
+.notif-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--wine),var(--wine3));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;}
+.notif-text{flex:1;min-width:0;}
+.notif-name{font-size:12px;font-weight:800;color:#fff;margin-bottom:1px;}
+.notif-msg{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.notif-time{font-size:10px;color:var(--muted2);flex-shrink:0;}
+
+/* ─── EXIT POP-UP ─── */
+.exit-bg{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center;}
+.exit-bg.on{display:flex;}
+.exit-sheet{background:linear-gradient(160deg,#120810,#1a0d14);border-radius:26px 26px 0 0;width:100%;max-width:430px;padding:24px 20px 44px;border-top:3px solid var(--wine3);position:relative;overflow:hidden;animation:su .35s ease;}
+@keyframes su{from{transform:translateY(100%)}to{transform:none}}
+.exit-handle{width:40px;height:4px;background:var(--bg4);border-radius:2px;margin:0 auto 20px;}
+
+/* Desconto em destaque — TOPO */
+.exit-discount-hero{
+  background:linear-gradient(135deg,rgba(140,26,58,.3),rgba(217,41,90,.2));
+  border:1px solid rgba(217,41,90,.5);
+  border-radius:18px;padding:20px 16px;
+  text-align:center;margin-bottom:20px;
+  position:relative;overflow:hidden;
+}
+.exit-discount-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--wine3),transparent);}
+.exit-disc-badge{display:inline-block;background:var(--wine3);color:#fff;font-size:10px;font-weight:900;padding:4px 12px;border-radius:20px;margin-bottom:10px;letter-spacing:1px;text-transform:uppercase;}
+.exit-disc-label{font-size:12px;color:var(--muted);margin-bottom:6px;}
+.exit-disc-price{font-family:'Playfair Display',serif;font-size:58px;font-weight:900;color:#fff;line-height:1;display:flex;align-items:flex-start;justify-content:center;gap:3px;}
+.exit-disc-price sup{font-size:20px;margin-top:10px;font-family:'Nunito',sans-serif;}
+.exit-disc-price .exit-cents{font-size:26px;margin-top:8px;font-family:'Nunito',sans-serif;}
+.exit-disc-old{font-size:12px;color:var(--muted2);text-decoration:line-through;margin-top:4px;}
+.exit-disc-copy{font-size:12px;color:rgba(247,237,240,.7);margin-top:8px;line-height:1.5;}
+.exit-city-name{color:var(--gold2);font-weight:900;}
+
+.exit-main-btn{
+  width:100%;background:linear-gradient(135deg,#c0392b,var(--wine3));
+  border:none;border-radius:15px;padding:18px 14px;
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;
+  color:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;
+  box-shadow:0 6px 28px rgba(217,41,90,.6);
+  line-height:1.3;margin-bottom:14px;
+  animation:pulseBtn 2.2s ease-in-out infinite;
+}
+
+.exit-divider{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.exit-divider::before,.exit-divider::after{content:'';flex:1;height:1px;background:var(--bg4);}
+.exit-divider span{font-size:10px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+
+.exit-opt-free{
+  width:100%;background:rgba(39,196,122,.08);
+  border:1px solid rgba(39,196,122,.3);border-radius:13px;
+  padding:14px 16px;display:flex;align-items:center;gap:12px;
+  cursor:pointer;font-family:'Nunito',sans-serif;text-align:left;
+  transition:transform .15s;margin-bottom:10px;
+}
+.exit-opt-free:active{transform:scale(.97);}
+.exit-opt-icon{font-size:24px;flex-shrink:0;}
+.exit-opt-label{font-size:10px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px;}
+.exit-opt-desc{font-size:13px;font-weight:700;color:#fff;}
+.exit-opt-detail{font-size:11px;color:var(--muted);}
+.exit-skip{display:block;text-align:center;font-size:12px;color:var(--muted2);background:none;border:none;cursor:pointer;font-family:'Nunito',sans-serif;padding:6px;width:100%;}
+
+/* ─── MODAL ─── */
+.modal-bg{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);backdrop-filter:blur(5px);display:none;align-items:flex-end;justify-content:center;}
+.modal-bg.on{display:flex;}
+.modal-sheet{background:var(--bg2);border-radius:24px 24px 0 0;width:100%;max-width:430px;padding:28px 22px 50px;border-top:1px solid var(--bg4);animation:su .3s ease;}
+.m-handle{width:40px;height:4px;background:var(--bg4);border-radius:2px;margin:0 auto 24px;}
+.m-icon{font-size:46px;text-align:center;margin-bottom:12px;}
+.m-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;line-height:1.2;}
+.m-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:24px;line-height:1.6;}
+.m-btn{width:100%;background:linear-gradient(135deg,var(--wine2),var(--wine3));border:none;border-radius:14px;padding:17px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;color:#fff;cursor:pointer;margin-bottom:12px;box-shadow:0 5px 22px rgba(180,34,73,.4);}
+.m-skip{display:block;text-align:center;font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'Nunito',sans-serif;padding:8px;width:100%;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     GATE — só isso aparece ao abrir a página
+════════════════════════════════════════════ -->
+<div id="pageGate">
+  <div class="gate-hero">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div class="gate-live"><div class="gate-live-dot"></div>Grupo ativo agora</div>
+    </div>
+    <h1 class="gate-h1">Mulheres <em>casadas e solteiras</em> perto de você querendo um encontro</h1>
+    <p class="gate-sub">Mais de 10.000 mulheres de todo o Brasil</p>
+
+    <!-- LOC CARD -->
+    <div class="loc-card" id="locCard">
+      <span class="loc-pin">📍</span>
+      <h2>Tem mulheres na sua cidade agora?</h2>
+      <p>Permite sua localização e veja quantas mulheres estão online perto de você nesse momento.</p>
+      <button class="loc-btn" onclick="startLoc()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        Ver mulheres perto de mim agora
+      </button>
+      <p class="loc-note">Usado apenas para mostrar perfis da sua região</p>
+    </div>
+
+    <!-- SEARCHING -->
+    <div class="searching" id="searchDiv">
+      <div class="spin"></div>
+      <p>Buscando mulheres em</p>
+      <strong id="searchCityTxt">sua região...</strong>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     CONTEÚDO PRINCIPAL — revelado após localizar
+════════════════════════════════════════════ -->
+<div id="pageContent">
+
+  <!-- URGENCY BAR -->
+  <div class="ubar" id="ubarEl">Somente hoje — <b id="vagasN">8 de 10 vagas preenchidas hoje</b></div>
+
+  <!-- BARRA DE PROGRESSO -->
+  <div class="vagas-bar-wrap">
+    <div class="vagas-bar-top">
+      <span class="vagas-bar-label">Vagas disponíveis hoje</span>
+      <span class="vagas-bar-count" id="vagasBarCount">2 restantes</span>
+    </div>
+    <div class="vagas-bar-track">
+      <div class="vagas-bar-fill" id="vagasBarFill" style="width:80%"></div>
+    </div>
+    <div class="vagas-bar-sub" id="vagasBarSub">8 de 10 vagas preenchidas</div>
+  </div>
+
+  <!-- RESULTS HEAD -->
+  <div class="results-head">
+    <div class="results-city-badge">📍 <span id="cityBadgeTxt">Sua cidade</span></div>
+    <h2><span id="girlsNearN">54</span> MULHERES ONLINE AGORA<br>EM <span id="cityNameUpper" style="color:var(--wine3);text-transform:uppercase;"></span><br><span style="font-size:22px;color:var(--gold2);">PERTINHO DE VOCÊ!</span></h2>
+    <p>Deslize para ver os perfis disponíveis agora</p>
+  </div>
+
+  <div class="carousel-outer">
+    <div class="carousel" id="girlsCarousel"></div>
+  </div>
+
+  <!-- LIVE GROUP -->
+  <div class="live-wrap" id="liveWrap">
+    <div class="live-head">
+      <div class="live-dot"></div>
+      <h3>O que está rolando no grupo agora</h3>
+      <span id="liveMembN">10.847 membros</span>
+    </div>
+    <div class="tg-frame">
+      <div class="tg-bar">
+        <div class="tg-av">
+          <img id="tgGroupAvatar" src="https://e-volutionn.com/wp-content/uploads/2026/02/CASADA-DISPONIVEL-2026-02-27T215240.415.png" onerror="this.parentElement.innerHTML='GV'">
+        </div>
+        <div>
+          <div class="tg-gname" id="tgGroupName">Grupinho VIP 🔥</div>
+          <div class="tg-gcount" id="tgCountTxt">10.847 membros · 4.213 online</div>
+        </div>
+        <div class="tg-lock-icon">🔒</div>
+      </div>
+      <div style="position:relative;">
+        <div class="tg-msgs" id="tgMsgs"></div>
+        <div class="chat-lock-overlay" id="chatLockOverlay">
+          <div class="chat-lock-ico">🔒</div>
+          <div class="chat-lock-title">Conteúdo exclusivo bloqueado</div>
+          <div class="chat-lock-sub">Para continuar acompanhando e interagir com as mulheres, você precisa ser membro.</div>
+          <button class="chat-lock-btn" onclick="scrollPlans()">Quero acesso — entrar agora</button>
+        </div>
+      </div>
+      <div class="tg-locked">
+        <div class="tg-locked-icon">🔒</div>
+        <h4>Conteúdo exclusivo para membros</h4>
+        <p>Acesse o grupo completo para ver todas as fotos, vídeos e participar das conversas ao vivo.</p>
+        <button class="tg-locked-btn" onclick="scrollPlans()">Quero acesso completo agora</button>
+      </div>
+      <div class="tg-input-row">
+        <input class="tg-inp" placeholder="Digite uma mensagem..." readonly onclick="showModal()">
+        <button class="tg-send" onclick="showModal()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-cta-wrap" id="mainCtaWrap">
+    <button class="main-cta" onclick="scrollPlans()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Garantir meu acesso agora
+    </button>
+    <p class="main-cta-sub">Encontro garantido ou dinheiro de volta</p>
+  </div>
+
+  <!-- PROOF -->
+  <div class="div-line"><span>Resultados reais</span></div>
+  <section class="proof-wrap">
+    <h2>Homens que <span>encontraram</span> de verdade</h2>
+    <p class="proof-sub">Mais de 900 encontros confirmados no último mês pelos membros do grupo</p>
+    <div class="testimonials" id="testimonialsBox"></div>
+    <div class="guarantee">
+      <span class="guarantee-icon">🛡️</span>
+      <h3>Encontro garantido ou dinheiro de volta</h3>
+      <p>Se você participar ativamente por 30 dias e não conseguir nenhum encontro, devolvemos 100% do valor pago. Sem perguntas, sem burocracia.</p>
+    </div>
+  </section>
+
+  <!-- PLANS -->
+  <div class="div-line" id="plansAnchor"><span>Escolha seu plano</span></div>
+  <section class="plans-wrap">
+    <div class="plans-intro">
+      <h2>Acesse agora e <span>encontre hoje</span></h2>
+      <p>Acesso liberado em menos de 1 minuto após o pagamento</p>
+    </div>
+
+    <!-- MENSAL -->
+    <div class="plan regular" onclick="goCheckout('mensal')">
+      <div class="plan-header">
+        <div class="plan-label">Mensal</div>
+        <div class="plan-price-wrap">
+          <div class="plan-price"><sup>R$</sup>69<span class="cents">,90</span></div>
+        </div>
+        <div class="plan-per">cobrado todo mês</div>
+      </div>
+      <ul class="plan-feats">
+        <li><span class="check">✓</span>Acesso completo ao Grupinho VIP</li>
+        <li><span class="check">✓</span>+10.000 mulheres ativas</li>
+        <li><span class="check">✓</span>Mulheres da sua cidade</li>
+        <li><span class="check">✓</span>Cancela quando quiser</li>
+      </ul>
+      <button class="plan-btn">Entrar no Grupo</button>
+      <p class="plan-btn-sub">🔒 PIX seguro · acesso em 1 minuto</p>
+    </div>
+
+    <!-- TRIMESTRAL -->
+    <div class="plan featured" onclick="goCheckout('trimestral')">
+      <div class="plan-badge">⚡ Mais popular — melhor custo-benefício</div>
+      <div class="plan-header" style="padding-top:28px;">
+        <div class="plan-label">3 Meses</div>
+        <div class="plan-price-wrap">
+          <div class="plan-price"><sup>R$</sup>127<span class="cents">,90</span></div>
+          <div class="plan-old">De R$ 209,70</div>
+          <div class="plan-per">Só R$ 42,63/mês</div>
+          <div class="plan-disc-pill">39% OFF — você economiza R$ 81,80</div>
+        </div>
+      </div>
+      <ul class="plan-feats">
+        <li><span class="check">✓</span>Tudo do plano mensal</li>
+        <li><span class="check">✓</span>Pack exclusivo de fotos grátis 🎁</li>
+        <li><span class="check">✓</span>3 meses de acesso garantido</li>
+        <li><span class="check">✓</span>Sem cobrança surpresa</li>
+        <li><span class="check">✓</span>Prioridade em novos conteúdos</li>
+      </ul>
+      <div class="economy-box">
+        <div class="economy-label">você economiza</div>
+        <div class="economy-val">R$ 81,80</div>
+        <div class="economy-sub">pagando 3 meses de uma vez</div>
+      </div>
+      <button class="plan-btn">Quero Entrar Agora</button>
+      <p class="plan-btn-sub">🔒 PIX seguro · acesso em 1 minuto</p>
+    </div>
+
+    <!-- ANUAL -->
+    <div class="plan regular" onclick="goCheckout('anual')">
+      <div class="plan-header">
+        <div class="plan-label">Anual — Máximo desconto</div>
+        <div class="plan-price-wrap">
+          <div class="plan-price"><sup>R$</sup>397<span class="cents">,90</span></div>
+          <div class="plan-old">De R$ 838,80</div>
+          <div class="plan-per">Só R$ 33,16/mês</div>
+          <div class="plan-disc-pill" style="background:rgba(217,41,90,.12);border-color:rgba(217,41,90,.3);color:var(--wine3);">53% OFF</div>
+        </div>
+      </div>
+      <ul class="plan-feats">
+        <li><span class="check">✓</span>Tudo do trimestral</li>
+        <li><span class="check">✓</span>Pack premium exclusivo 🔥</li>
+        <li><span class="check">✓</span>12 meses por menos de R$34/mês</li>
+        <li><span class="check">✓</span>Acesso vitalício a novidades</li>
+      </ul>
+      <button class="plan-btn">Entrar com Desconto Máximo</button>
+      <p class="plan-btn-sub">🔒 PIX seguro · acesso em 1 minuto</p>
+    </div>
+
+    <p style="text-align:center;font-size:12px;color:var(--muted);margin-bottom:20px;">Pagamento 100% seguro via PIX · Acesso em menos de 1 minuto</p>
+  </section>
+
+  <!-- FAQ -->
+  <div class="div-line"><span>Dúvidas</span></div>
+  <section class="faq-wrap">
+    <h2>Perguntas frequentes</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-t">O grupo tem mulheres reais?</span><span class="faq-ico">+</span></div><div class="faq-a"><p class="faq-a-t">Sim. São mulheres reais do Brasil inteiro que entraram por conta própria. O grupo tem mais de 10.000 membros ativos com movimentação diária.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-t">Como recebo o acesso após pagar?</span><span class="faq-ico">+</span></div><div class="faq-a"><p class="faq-a-t">Assim que o PIX for confirmado, você recebe automaticamente no WhatsApp um link exclusivo de acesso. Em menos de 1 minuto você já está dentro.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-t">Tem mulheres da minha cidade?</span><span class="faq-ico">+</span></div><div class="faq-a"><p class="faq-a-t">O grupo tem membros de todo o Brasil. Capitais e grandes cidades têm dezenas de mulheres próximas.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-t">Posso cancelar quando quiser?</span><span class="faq-ico">+</span></div><div class="faq-a"><p class="faq-a-t">No plano mensal você cancela a qualquer momento. Para planos trimestrais e anuais, o acesso fica ativo até o fim do período pago.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span class="faq-q-t">É discreto? Aparece no extrato?</span><span class="faq-ico">+</span></div><div class="faq-a"><p class="faq-a-t">Total discrição. O nome no extrato do PIX é neutro, sem nenhuma referência ao conteúdo.</p></div></div>
+  </section>
+
+  <section class="final-wrap">
+    <h2>Seu encontro pode ser <span>hoje à noite</span></h2>
+    <p>Centenas de membros estão acessando agora. Não deixe outra pessoa ficar com o contato que poderia ser seu.</p>
+    <button class="final-btn" onclick="scrollPlans()">Quero acesso agora — garantido</button>
+    <p class="final-g">Encontro garantido ou 100% de reembolso</p>
+  </section>
+
+</div><!-- /pageContent -->
+
+<!-- STICKY -->
+<div class="sticky" id="stickyBar">
+  <button class="sticky-btn" onclick="scrollPlans()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Garantir meu acesso agora
+  </button>
+</div>
+
+<!-- NOTIFICAÇÕES -->
+<div class="notif-container" id="notifContainer"></div>
+
+<!-- EXIT POP-UP -->
+<div class="exit-bg" id="exitBg" onclick="exitBgClose(event)">
+  <div class="exit-sheet">
+    <div class="exit-handle"></div>
+
+    <!-- DESCONTO EM DESTAQUE NO TOPO -->
+    <div class="exit-discount-hero">
+      <div class="exit-disc-badge">Oferta exclusiva — só agora</div>
+      <div class="exit-disc-label">Você é o único homem de <span class="exit-city-name" id="exitCityName">sua cidade</span> vendo isso</div>
+      <div class="exit-disc-price"><sup>R$</sup>37<span class="exit-cents">,90</span></div>
+      <div class="exit-disc-old">De R$ 69,90 — só no 1º mês</div>
+      <div class="exit-disc-copy">As mulheres de <span class="exit-city-name" id="exitCityName2">sua cidade</span> estão no grupo agora mesmo. Elas não vão esperar.</div>
+    </div>
+
+    <button class="exit-main-btn" id="exitDiscBtn" onclick="goExitDisc()">
+      QUERO ENTRAR POR R$ 37,90 E<br>TRANSAR HOJE COM MULHERES PERTO DE MIM
+    </button>
+
+    <div class="exit-divider"><span>ou prefere começar de graça</span></div>
+
+    <button class="exit-opt-free" onclick="goExitFree()">
+      <div class="exit-opt-icon">🎁</div>
+      <div>
+        <div class="exit-opt-label">Grátis</div>
+        <div class="exit-opt-desc">Entrar no canal gratuito</div>
+        <div class="exit-opt-detail">Acesso ao grupo free — sem pagar nada agora</div>
+      </div>
+    </button>
+
+    <button class="exit-skip" onclick="closeExit()">Não quero encontrar ninguém</button>
+  </div>
+</div>
+
+<!-- MODAL BLOQUEIO -->
+<div class="modal-bg" id="modalBg" onclick="bgClose(event)">
+  <div class="modal-sheet">
+    <div class="m-handle"></div>
+    <div class="m-icon">🔒</div>
+    <div class="m-title">Exclusivo para membros</div>
+    <p class="m-sub">Para interagir com as mulheres do grupo você precisa ter acesso. Garanta o seu agora e entre em minutos.</p>
+    <button class="m-btn" onclick="scrollPlansFromModal()">Ver planos e garantir acesso</button>
+    <button class="m-skip" onclick="closeModal()">Agora não</button>
+  </div>
+</div>
+
+<script>
+// ─── CONFIG DO SERVIDOR ──────────────────────────────
+let LINKS = { mensal:'#', trimestral:'#', anual:'#', free:'#' };
+let DISCOUNT_MENSAL = '';
+let GIRLS = [];
+let MSGS_TEMPLATES = [];
+let TESTIMONIALS = [];
+let GROUP_NAME = 'Grupinho VIP 🔥';
+let GROUP_AVATAR = '';
+let CHAT_TIMER_MINUTES = 4;
+
+async function loadConfig(){
+  try {
+    const r = await fetch('/api/site-config');
+    const cfg = await r.json();
+    LINKS              = cfg.links            || LINKS;
+    DISCOUNT_MENSAL    = cfg.discountMensal   || '';
+    GROUP_NAME         = cfg.groupName        || GROUP_NAME;
+    GROUP_AVATAR       = cfg.groupAvatar      || GROUP_AVATAR;
+    CHAT_TIMER_MINUTES = cfg.chatTimerMinutes || 4;
+    GIRLS              = cfg.girls            || GIRLS;
+    MSGS_TEMPLATES     = cfg.groupMsgs        || MSGS_TEMPLATES;
+    TESTIMONIALS       = cfg.testimonials     || TESTIMONIALS;
+
+    const gnEl = document.getElementById('tgGroupName');
+    if(gnEl) gnEl.textContent = GROUP_NAME;
+    const gavEl = document.getElementById('tgGroupAvatar');
+    if(gavEl && GROUP_AVATAR) gavEl.src = GROUP_AVATAR;
+
+    renderTestimonials();
+  } catch(e){ console.warn('Config não carregada', e); }
+}
+
+function renderTestimonials(){
+  const box = document.getElementById('testimonialsBox');
+  if(!box || !TESTIMONIALS.length) return;
+  box.innerHTML = TESTIMONIALS.map(t=>{
+    const avatarHtml = t.avatar
+      ? `<img src="${t.avatar}" style="width:100%;height:100%;object-fit:cover;">`
+      : t.name[0];
+    const mediaHtml = t.img
+      ? (t.img.match(/\.(mp4|mov|webm)$/i)
+          ? `<video src="${t.img}" class="test-media" controls muted playsinline></video>`
+          : `<img src="${t.img}" class="test-media" onerror="this.style.display='none'">`)
+      : '';
+    return `<div class="test">
+      ${mediaHtml}
+      <div class="test-top">
+        <div class="test-av">${avatarHtml}</div>
+        <div><div class="test-name">${t.name}</div><div class="test-city">${t.city}</div></div>
+      </div>
+      <div class="test-stars">★★★★★</div>
+      <div class="test-text">"${t.text}"</div>
+      <div class="test-tag">${t.tag}</div>
+    </div>`;
+  }).join('');
+}
+
+loadConfig();
+
+// ─── RASTREIO ──────────────────────────────────────
+const SID = Math.random().toString(36).slice(2) + Date.now();
+function trackEvent(event, data){
+  fetch('/api/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event,data})}).catch(()=>{});
+}
+setInterval(()=>{
+  fetch('/api/ping',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sid:SID})}).catch(()=>{});
+},30000);
+fetch('/api/ping',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sid:SID})}).catch(()=>{});
+
+// ─── BARRA DE VAGAS ───────────────────────────────
+let vagasTotal = 10, vagasOcupadas = 8;
+function updateVagasBar(){
+  const restantes = vagasTotal - vagasOcupadas;
+  const pct = (vagasOcupadas / vagasTotal) * 100;
+  document.getElementById('vagasBarFill').style.width = pct + '%';
+  document.getElementById('vagasBarCount').textContent = restantes + ' restante' + (restantes===1?'':'s');
+  document.getElementById('vagasBarSub').textContent = vagasOcupadas + ' de ' + vagasTotal + ' vagas preenchidas';
+  document.getElementById('vagasN').textContent = vagasOcupadas + ' de ' + vagasTotal + ' vagas preenchidas hoje';
+}
+updateVagasBar();
+setInterval(()=>{
+  if(vagasOcupadas < vagasTotal - 1){
+    vagasOcupadas++;
+    updateVagasBar();
+  }
+}, 55000);
+
+// ─── LOCALIZAÇÃO ──────────────────────────────────
+let userCity = 'sua região';
+let MSGS = [];
+
+function startLoc(){
+  trackEvent('click',{btn:'btn_localizar'});
+  document.getElementById('locCard').style.display = 'none';
+  document.getElementById('searchDiv').style.display = 'block';
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      p => fetchCity(p.coords.latitude, p.coords.longitude),
+      ()  => showResults('sua região')
+    );
+  } else { showResults('sua região'); }
+}
+
+function fetchCity(lat, lon){
+  fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+    .then(r => r.json())
+    .then(d => {
+      const c = d.address.city||d.address.town||d.address.village||d.address.county||'sua região';
+      showResults(c);
+    })
+    .catch(() => showResults('sua região'));
+}
+
+function showResults(city){
+  userCity = city;
+  document.getElementById('searchCityTxt').textContent = city + '...';
+
+  setTimeout(()=>{
+    // 1. Esconder o gate
+    const gate = document.getElementById('pageGate');
+    gate.classList.add('hiding');
+
+    // 2. Revelar todo o conteúdo
+    setTimeout(()=>{
+      gate.style.display = 'none';
+      document.body.style.overflow = '';
+      const content = document.getElementById('pageContent');
+      content.classList.add('revealed');
+
+      // Preencher cidade
+      const n = Math.floor(Math.random()*28)+42;
+      document.getElementById('girlsNearN').textContent = n;
+      document.getElementById('cityBadgeTxt').textContent = city;
+      const upperEl = document.getElementById('cityNameUpper');
+      if(upperEl) upperEl.textContent = city;
+
+      // Preencher exit popup cidade
+      ['exitCityName','exitCityName2'].forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.textContent = city;
+      });
+
+      buildCarousel();
+      buildMsgs(city);
+
+      setTimeout(()=>{
+        document.getElementById('liveWrap').style.display = 'block';
+        document.getElementById('mainCtaWrap').style.display = 'block';
+        startTg();
+        startNotifications(city);
+      }, 400);
+
+      setTimeout(()=>{ document.getElementById('stickyBar').style.display='block'; }, 3000);
+      setupExit();
+
+    }, 600);
+  }, 2400);
+}
+
+// ─── CARROSSEL ───────────────────────────────────
+function buildCarousel(){
+  const c = document.getElementById('girlsCarousel');
+  c.innerHTML = '';
+  const dists = ['0,3km','0,6km','1,1km','1,7km','2,2km','2,8km','3,3km','3,9km','4,5km'];
+  const city  = userCity || 'sua cidade';
+  (GIRLS.length ? GIRLS : []).forEach((g, i)=>{
+    const d = document.createElement('div');
+    d.className = 'girl-card';
+    d.innerHTML = `
+      <img class="girl-img" src="${g.img}" alt="${g.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="girl-img-placeholder" style="display:none;background:linear-gradient(160deg,#7a1533,#080508);">${g.name[0]}</div>
+      <div class="girl-overlay"></div>
+      <div class="girl-online-dot"></div>
+      <div class="girl-info">
+        <div class="girl-name">${g.name}, ${g.age}</div>
+        <div class="girl-dist">📍 ${city} — ${dists[i]||'5km'}</div>
+      </div>
+      <div class="girl-btns">
+        <button class="girl-btn girl-btn-wa" onclick="trackEvent('click',{btn:'carousel_conversar'});showModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a7.72 7.72 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.85L.057 23.5l5.77-1.515A11.946 11.946 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.851 0-3.587-.485-5.092-1.334l-.361-.214-3.424.898.915-3.333-.235-.374A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Conversar
+        </button>
+        <button class="girl-btn girl-btn-call" onclick="trackEvent('click',{btn:'carousel_ver_perfil'});showModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Ver perfil
+        </button>
+      </div>`;
+    c.appendChild(d);
+  });
+}
+
+// ─── MENSAGENS ───────────────────────────────────
+function buildMsgs(city){
+  MSGS = (MSGS_TEMPLATES.length ? MSGS_TEMPLATES : [
+    {n:'Amanda S.',avatar:'',c:'#c0392b',t:'Boa noite gente! Sou da sua cidade 🌙',typ:'txt'},
+    {n:'Juliana M.',avatar:'',c:'#8b1a4a',t:'Também sou daqui! 😏',typ:'txt'},
+    {n:'Fernanda T.',avatar:'',c:'#a01e42',t:'',typ:'foto',blur:false,img:''},
+    {n:'Larissa O.',avatar:'',c:'#851738',t:'Meu Deus 🥵🥵',typ:'txt'},
+    {n:'Amanda S.',avatar:'',c:'#c0392b',t:'',typ:'foto',blur:true,img:''},
+    {n:'Beatriz N.',avatar:'',c:'#922040',t:'Boa noite a todos 💋',typ:'txt'},
+  ]).map(m => m.typ==='txt' ? {...m, t:m.t.replace(/daqui/g,city).replace(/sua cidade/g,city)} : m);
+}
+
+// ─── CHAT ────────────────────────────────────────
+let chatLocked = false;
+function startTg(){
+  const box = document.getElementById('tgMsgs');
+  let i = 0;
+  const ms = (CHAT_TIMER_MINUTES||4) * 60 * 1000;
+  setTimeout(()=>{
+    chatLocked = true;
+    document.getElementById('chatLockOverlay').classList.add('on');
+  }, ms);
+
+  function addMsg(){
+    if(chatLocked) return;
+    const m = MSGS[i % MSGS.length]; i++;
+    const row = document.createElement('div');
+    row.className = 'msg-row';
+    const now = new Date();
+    const time = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+    const avContent = m.avatar
+      ? `<img src="${m.avatar}" onerror="this.parentElement.style.background='${m.c}';this.parentElement.textContent='${m.n[0]}';">`
+      : m.n[0];
+    if(m.typ==='foto'){
+      const imgContent = m.img
+        ? `<img src="${m.img}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" onerror="this.parentElement.innerHTML='📸'">`
+        : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:60px;">📸</div>`;
+      row.innerHTML = `
+        <div class="msg-av" style="background:${m.c}">${avContent}</div>
+        <div class="msg-bubble">
+          <div class="msg-sender" style="color:${m.c}">${m.n}</div>
+          <div class="msg-photo-wrap${m.blur?' msg-photo-blur':''}">
+            <div class="msg-photo-inner" style="background:linear-gradient(135deg,${m.c},#080508);padding:0;overflow:hidden;">${imgContent}</div>
+          </div>
+          <div class="msg-time">${time}</div>
+        </div>`;
+    } else {
+      row.innerHTML = `
+        <div class="msg-av" style="background:${m.c}">${avContent}</div>
+        <div class="msg-bubble">
+          <div class="msg-sender" style="color:${m.c}">${m.n}</div>
+          <div class="msg-text">${m.t}</div>
+          <div class="msg-time">${time}</div>
+        </div>`;
+    }
+    box.appendChild(row);
+    box.scrollTop = box.scrollHeight;
+    while(box.children.length > 30) box.removeChild(box.firstChild);
+    setTimeout(addMsg, 1800 + Math.random()*3200);
+  }
+  for(let k=0;k<3;k++) setTimeout(()=>addMsg(), k*500);
+  setTimeout(addMsg, 2000);
+}
+
+// ─── NOTIFICAÇÕES ────────────────────────────────
+const MALE_NAMES = ['João','Carlos','Ricardo','Marcos','Felipe','Rafael','Pedro','André','Bruno','Diego','Lucas','Gustavo','Rodrigo','Thiago','Leandro'];
+const NOTIF_MSGS = [
+  '{nome} de {cidade} garantiu acesso agora',
+  '{nome} de {cidade} entrou no grupo — há {min} min',
+  '{nome} de {cidade} acabou de se tornar membro',
+  '{nome} de {cidade} está online no grupo agora',
+  '{nome} de {cidade} garantiu o último acesso disponível',
+];
+
+function startNotifications(city){
+  const container = document.getElementById('notifContainer');
+  function showNotif(){
+    const name = MALE_NAMES[Math.floor(Math.random()*MALE_NAMES.length)];
+    const msg  = NOTIF_MSGS[Math.floor(Math.random()*NOTIF_MSGS.length)]
+      .replace('{nome}', name)
+      .replace('{cidade}', city)
+      .replace('{min}', Math.floor(Math.random()*8)+1);
+
+    const el = document.createElement('div');
+    el.className = 'notif';
+    el.innerHTML = `
+      <div class="notif-av">${name[0]}</div>
+      <div class="notif-text">
+        <div class="notif-name">${name}</div>
+        <div class="notif-msg">${msg}</div>
+      </div>
+      <div class="notif-time">agora</div>`;
+    container.appendChild(el);
+
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{ el.classList.add('show'); });
+    });
+
+    setTimeout(()=>{
+      el.classList.remove('show');
+      setTimeout(()=>el.remove(), 500);
+    }, 4500);
+
+    // Próxima notificação: 12-22 segundos
+    setTimeout(showNotif, 12000 + Math.random()*10000);
+  }
+
+  // Primeira após 5s
+  setTimeout(showNotif, 5000);
+}
+
+// ─── CONTADORES ──────────────────────────────────
+(function(){
+  let base=10847, online=4213;
+  setInterval(()=>{
+    base+=Math.floor(Math.random()*4)-1; base=Math.max(10800,base);
+    online+=Math.floor(Math.random()*10)-5; online=Math.max(4000,Math.min(4500,online));
+    const t=document.getElementById('tgCountTxt'), l=document.getElementById('liveMembN');
+    if(t) t.textContent=base.toLocaleString('pt-BR')+' membros · '+online.toLocaleString('pt-BR')+' online';
+    if(l) l.textContent=base.toLocaleString('pt-BR')+' membros';
+  },9000);
+})();
+
+// ─── EXIT INTENT ─────────────────────────────────
+let exitShown = false;
+function setupExit(){
+  let lastY=0, lastT=0;
+  document.addEventListener('touchstart', e=>{lastY=e.touches[0].clientY;lastT=Date.now();},{passive:true});
+  document.addEventListener('touchend', e=>{
+    const dy=lastY-e.changedTouches[0].clientY;
+    const dt=Date.now()-lastT;
+    if(dy<-60&&dt<300&&window.scrollY<100) showExit();
+  },{passive:true});
+  document.addEventListener('mouseleave', e=>{ if(e.clientY<10) showExit(); });
+  document.addEventListener('visibilitychange',()=>{ if(document.hidden) showExit(); });
+}
+function showExit(){
+  if(exitShown) return;
+  exitShown=true;
+  document.getElementById('exitBg').classList.add('on');
+  trackEvent('click',{btn:'exit_popup_shown'});
+}
+function closeExit(){ document.getElementById('exitBg').classList.remove('on'); }
+function exitBgClose(e){ if(e.target===document.getElementById('exitBg')) closeExit(); }
+function goExitFree(){
+  trackEvent('click',{btn:'exit_canal_free'});
+  closeExit();
+  if(LINKS.free&&LINKS.free!=='#') window.location.href=LINKS.free;
+  else scrollPlans();
+}
+function goExitDisc(){
+  trackEvent('click',{btn:'exit_desconto_mensal'});
+  closeExit();
+  if(LINKS.mensal&&LINKS.mensal!=='#') window.location.href=LINKS.mensal;
+  else scrollPlans();
+}
+
+// ─── PLANOS ──────────────────────────────────────
+function goCheckout(p){ trackEvent('click',{btn:'plano_'+p}); window.location.href=LINKS[p]||'#'; }
+function scrollPlans(){ trackEvent('click',{btn:'cta_scroll_plans'}); document.getElementById('plansAnchor').scrollIntoView({behavior:'smooth'}); }
+
+// ─── MODAL ───────────────────────────────────────
+function showModal(){ document.getElementById('modalBg').classList.add('on'); }
+function closeModal(){ document.getElementById('modalBg').classList.remove('on'); }
+function bgClose(e){ if(e.target===document.getElementById('modalBg')) closeModal(); }
+function scrollPlansFromModal(){ closeModal(); scrollPlans(); }
+
+// ─── FAQ ─────────────────────────────────────────
+function toggleFaq(el){ el.parentElement.classList.toggle('open'); }
+
+// Travar scroll enquanto gate está visível
+document.body.style.overflow = 'hidden';
+</script>
+</body>
+</html>
